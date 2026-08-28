@@ -2055,12 +2055,23 @@ html2canvas (用于图片生成)
                 document.body.classList.remove('capture-mode');
 
                 // ---------- 兼容 iOS Safari 的保存逻辑 ----------
-                const dataUrl = canvas.toDataURL('image/png');
-                const fileName = `LogTime_${state.taskName.trim() || 'task'}_${new Date().toISOString().slice(0,10)}.png`;
+const dataUrl = canvas.toDataURL('image/png');
+const fileName = `LogTime_${state.taskName.trim() || 'task'}_${new Date().toISOString().slice(0,10)}.png`;
 
-                // 明确排除 iOS 设备：iOS Safari 虽然支持 download 属性，但处理 data URL 会失败
-                const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
-                const isDownloadSupported = 'download' in document.createElement('a') && !isIos;
+// 更可靠的 iOS 检测：同时检测 userAgent、触摸事件、maxTouchPoints
+// 即使 iPad 的 userAgent 显示为 Macintosh，也能正确识别
+const isIos = (function() {
+    // 1. 检测 userAgent 关键词
+    const ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/.test(ua)) return true;
+    // 2. 检测是否为 Mac + 触摸支持（iPad 在 iOS 13+ 上 UA 为 Macintosh）
+    if (/Macintosh/.test(ua) && 'ontouchend' in document && navigator.maxTouchPoints > 0) return true;
+    // 3. 检测是否为 Safari（不含 Chrome）且有触摸支持
+    if (/Safari/.test(ua) && !/Chrome/.test(ua) && 'ontouchend' in document && navigator.maxTouchPoints > 0) return true;
+    return false;
+})();
+
+const isDownloadSupported = 'download' in document.createElement('a') && !isIos;
 
                 if (isDownloadSupported) {
                     // 桌面端 / 安卓 / macOS Safari：直接下载
