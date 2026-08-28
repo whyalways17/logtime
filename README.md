@@ -194,7 +194,7 @@ LogTime.html
 
 当前在线版本：
 
-https://whyalways17.github.io/logtime/
+https://yalways17.github.io/logtime/
 
 ---
 
