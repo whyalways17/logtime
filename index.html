@@ -167,10 +167,29 @@
         .top-menu {
             flex-shrink: 0;
             padding-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .top-menu .icon-button {
             font-size: 1.4rem;
             padding: 2px 6px;
+        }
+        .top-menu .info-button {
+            font-size: 1.2rem;
+            padding: 2px 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            border-radius: var(--radius);
+            transition: background 0.15s, color 0.15s;
+            line-height: 1;
+            font-family: var(--font);
+        }
+        .top-menu .info-button:hover {
+            background: var(--gray-light);
+            color: var(--text);
         }
 
         .main-visual {
@@ -231,33 +250,6 @@
         }
         .percent-wrap.fade-out {
             opacity: 0;
-        }
-        .percent-help {
-            pointer-events: auto;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            line-height: 26px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.6s ease;
-            font-weight: 400;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .percent-help:hover {
-            background: var(--gray-light);
-            border-color: var(--gray);
-            color: var(--text);
-        }
-        .percent-help.hidden-btn {
-            opacity: 0;
-            pointer-events: none;
         }
 
         .percent-tag {
@@ -557,6 +549,39 @@
             color: var(--text-muted);
         }
 
+        .mode-selection {
+            margin-bottom: 16px;
+            padding: 10px 12px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: opacity 0.3s ease, pointer-events 0.3s ease;
+        }
+        .mode-selection.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .mode-selection .mode-label {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+            margin-bottom: 6px;
+        }
+        .mode-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 2px 0;
+            font-size: 0.85rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .mode-option input[type="radio"] {
+            margin: 0;
+            accent-color: var(--blue);
+            flex-shrink: 0;
+        }
+
         .add-row {
             display: flex;
             gap: 10px;
@@ -716,7 +741,7 @@
             color: #a93226;
         }
 
-        /* ===== 弹窗 ===== */
+        /* ===== 合并弹窗 ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -747,74 +772,87 @@
         }
 
         .modal-title {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 430;
             color: var(--text);
             letter-spacing: -0.01em;
-            margin-bottom: 16px;
+            margin-bottom: 6px;
             line-height: 1.3;
         }
 
-        .modal-body {
+        .modal-intro {
             font-size: 0.92rem;
             color: var(--text-light);
             line-height: 1.8;
+            margin-bottom: 18px;
         }
-        .modal-body p {
-            margin-bottom: 10px;
+        .modal-intro p {
+            margin-bottom: 6px;
         }
-        .modal-body p:last-of-type {
+        .modal-intro p:last-child {
             margin-bottom: 0;
         }
-        .modal-body strong {
+
+        .modal-intro .highlight {
+            color: var(--text);
+        }
+
+        /* ---- 模式卡片 ---- */
+        .mode-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .mode-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px 14px;
+        }
+
+        .mode-card-header {
+            font-size: 0.82rem;
+            font-weight: 430;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            margin-bottom: 2px;
+        }
+        .mode-card-header .mode-badge {
+            font-weight: 380;
+            color: var(--text-light);
+            margin-right: 2px;
+        }
+
+        .mode-card-formula {
+            font-family: "Times New Roman", "STIX", "Georgia", serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text);
+            letter-spacing: 0.03em;
+            padding: 2px 0;
+            text-align: left;
+        }
+
+        .modal-theory {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            margin-bottom: 2px;
+        }
+        .modal-theory strong {
             color: var(--text);
             font-weight: 480;
         }
-        .modal-body .block-definition {
-            font-size: 0.96rem;
+
+        .modal-closing {
+            font-size: 0.9rem;
             color: var(--text);
-            font-weight: 420;
-            margin-bottom: 10px;
-        }
-        .modal-body .block-sensation {
-            background: rgba(90, 138, 158, 0.04);
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin: 6px 0 12px 0;
-            color: var(--text-light);
-            line-height: 1.8;
-        }
-        .modal-body .block-sensation strong {
-            color: var(--text);
-        }
-        .modal-body .block-formula {
-            text-align: center;
-            padding: 10px 0 10px 0;
-            font-family: 'Times New Roman', serif;
-            font-style: italic;
-            font-size: 1.15rem;
-            color: var(--text);
-            letter-spacing: 0.04em;
-            margin: 2px 0 10px 0;
-        }
-        .modal-body .block-conclusion {
-            font-size: 0.92rem;
-            color: var(--text);
-            font-weight: 430;
-            line-height: 1.7;
-            margin: 4px 0 8px 0;
-        }
-        .modal-body .block-divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 14px 0 12px 0;
-        }
-        .modal-body .block-footer {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            letter-spacing: 0.02em;
-            margin: 0;
             line-height: 1.6;
+            margin-top: 10px;
         }
 
         .modal-version {
@@ -823,15 +861,13 @@
             color: var(--text-muted);
             letter-spacing: 0.04em;
             opacity: 0.35;
-            margin-top: 12px;
+            margin-top: 10px;
             user-select: none;
         }
 
         .modal-close {
-            margin-top: 18px;
+            margin-top: 16px;
             text-align: right;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
         }
         .modal-close button {
             background: none;
@@ -914,12 +950,6 @@
                 font-size: 0.75rem;
                 padding-left: 4px;
             }
-            .percent-help {
-                width: 24px;
-                height: 24px;
-                font-size: 0.75rem;
-                line-height: 22px;
-            }
             .percent-tag {
                 font-size: 0.6rem;
                 bottom: -2px;
@@ -963,13 +993,22 @@
                 margin: 10px;
             }
             .modal-title {
-                font-size: 1rem;
+                font-size: 1.05rem;
             }
-            .modal-body {
-                font-size: 0.88rem;
+            .modal-intro {
+                font-size: 0.85rem;
             }
-            .modal-body .block-formula {
-                font-size: 1rem;
+            .mode-card-formula {
+                font-size: 0.95rem;
+            }
+            .mode-card {
+                padding: 10px 14px 12px;
+            }
+            .modal-theory {
+                font-size: 0.8rem;
+            }
+            .modal-closing {
+                font-size: 0.85rem;
             }
             .grid-container {
                 max-width: 320px;
@@ -980,6 +1019,9 @@
             .empty-footer {
                 font-size: 0.6rem;
                 padding-top: 12px;
+            }
+            .top-menu .info-button {
+                font-size: 1rem;
             }
         }
 
@@ -1007,6 +1049,12 @@
             .empty-footer {
                 font-size: 0.55rem;
                 padding-top: 8px;
+            }
+            .top-menu .info-button {
+                font-size: 0.9rem;
+            }
+            .mode-card-formula {
+                font-size: 0.85rem;
             }
         }
 
@@ -1068,6 +1116,7 @@
                 <div id="taskDurationDisplay" class="task-duration">—</div>
             </div>
             <div class="top-menu">
+                <button class="info-button" id="infoBtn" aria-label="关于 LogTime">ⓘ</button>
                 <button class="icon-button" id="menuBtn" aria-label="菜单">☰</button>
             </div>
         </header>
@@ -1093,6 +1142,19 @@
                     </select>
                 </div>
             </div>
+
+            <div class="mode-selection" id="modeSelection">
+                <div class="mode-label">时间反馈模式</div>
+                <label class="mode-option">
+                    <input type="radio" name="mode" value="A" checked />
+                    适合长周期任务
+                </label>
+                <label class="mode-option">
+                    <input type="radio" name="mode" value="B" />
+                    适合短时间任务
+                </label>
+            </div>
+
             <div class="add-actions">
                 <button class="btn" id="cancelAddBtn">取消</button>
                 <button class="btn btn-primary" id="startNowBtn">Start Now</button>
@@ -1108,9 +1170,7 @@
 
             <div id="ringContainer" class="ring-container hidden">
                 <canvas id="ringCanvas" width="400" height="400"></canvas>
-                <div class="percent-wrap" id="percentWrap">
-                    <button class="percent-help" id="helpBtn" aria-label="了解非线性时间">?</button>
-                </div>
+                <div class="percent-wrap" id="percentWrap"></div>
                 <div class="percent-tag" id="percentTag">
                     <span id="percentText">0.0%</span>
                 </div>
@@ -1150,9 +1210,6 @@
                 </div>
             </div>
             <div class="menu-about">
-                <div class="menu-option" id="aboutMenuBtn">
-                    <span style="font-size:0.9rem;">ℹ</span> About
-                </div>
                 <div class="menu-option" id="captureMenuBtn" style="margin-top:4px;">
                     <span style="font-size:0.9rem;">🖼</span> 生成图片
                 </div>
@@ -1163,46 +1220,48 @@
         </div>
     </div>
 
-    <!-- ===== About 弹窗 ===== -->
-    <div class="modal-overlay" id="aboutModal">
+    <!-- ===== 合并弹窗 - 新文案 ===== -->
+    <div class="modal-overlay" id="infoModal">
         <div class="modal-content">
             <div class="modal-title">关于 LogTime</div>
-            <div class="modal-body">
-                <p class="block-definition"><strong>LogTime</strong> 是一个用对数节奏呈现时间的计时器。</p>
-                <p>真实时间始终匀速，人对它的感受却不均匀——开始觉得漫长，结尾一晃而过。</p>
-                <div class="block-sensation">
-                    <strong>韦伯–费希纳定律</strong> 揭示：感知与刺激呈对数关系。<br>
-                    LogTime 沿用这一规律，让进度也按同样的方式变化。
-                </div>
-                <div class="block-formula">P(x) = ln(1 + a·x) / ln(1 + a)</div>
-                <p class="block-conclusion"><strong>前期的每一分钟走得更远，后期的每一分钟走得更短。</strong></p>
-                <hr class="block-divider" />
-                <p class="block-footer">时间依旧匀速，只是在这里换了一种方式呈现。</p>
-            </div>
-            <div class="modal-version">v1.0 · 2026</div>
-            <div class="modal-close">
-                <button id="aboutCloseBtn">关闭</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- ===== 问号弹窗 ===== -->
-    <div class="modal-overlay" id="helpModal">
-        <div class="modal-content">
-            <div class="modal-title">👀 觉得进度太快了？</div>
-            <div class="modal-body">
-                <p>时间匀速流逝，但对它的感知却往往不均匀。</p>
-                <p>开始时觉得漫长，后期却一晃而过。</p>
-                <div class="block-sensation">
-                    <strong>LogTime</strong> 基于 <strong>韦伯–费希纳定律</strong> 的对数关系<br>
-                    让进度节奏呼应这种感知<br>
-                    <strong>用视觉的快慢，平衡感知的快慢。</strong>
-                </div>
-                <hr class="block-divider" />
-                <p class="block-footer">完整理论请见菜单中的 About</p>
+            <div class="modal-intro">
+                <p>人对时间的感受并不均匀。</p>
+                <p>同样的一分钟，在任务开始和结束时，心理重量可能不同。</p>
+                LogTime 让时间的视觉呈现转为非线性，<br />
+                用视觉的快慢，平衡感知的快慢。</p>
             </div>
+
+            <div class="mode-cards">
+                <div class="mode-card">
+                    <div class="mode-card-header">
+                        <span class="mode-badge">A</span> · 适合长周期任务
+                    </div>
+                    <div class="mode-card-formula">
+                        P<sub>A</sub>(x) = ln(1 + 2x) / ln&thinsp;3
+                    </div>
+                </div>
+
+                <div class="mode-card">
+                    <div class="mode-card-header">
+                        <span class="mode-badge">B</span> · 适合短时间任务
+                    </div>
+                    <div class="mode-card-formula">
+                        P<sub>B</sub>(x) = x²
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-theory">
+                参考 <strong>韦伯–费希纳定律</strong> 中刺激与感知之间的对数关系。
+            </div>
+
+            <p class="modal-closing">真实时间没有改变，改变的是我们看见它的方式。</p>
+
+            <div class="modal-version">v1.0 · 2026</div>
+
             <div class="modal-close">
-                <button id="helpCloseBtn">知道了</button>
+                <button id="infoCloseBtn">关闭</button>
             </div>
         </div>
     </div>
@@ -1235,6 +1294,8 @@
                 mode: 'ring',
                 showRealTime: false,
                 isInitialized: false,
+                feedbackMode: 'A',
+                isModeLocked: false,
             };
 
             // ===== 数学模型 =====
@@ -1242,6 +1303,11 @@
                 a = a ?? CONFIG.MATH_A;
                 if (x <= 0) return 0;
                 if (x >= 1) return 1;
+
+                if (state.feedbackMode === 'B') {
+                    return x * x;
+                }
+
                 return Math.log(1 + a * x) / Math.log(1 + a);
             }
 
@@ -1269,9 +1335,6 @@
                 percentWrap: $('percentWrap'),
                 percentTag: $('percentTag'),
                 percentText: $('percentText'),
-                helpBtn: $('helpBtn'),
-                helpModal: $('helpModal'),
-                helpCloseBtn: $('helpCloseBtn'),
                 gridContainer: $('gridContainer'),
                 gridInner: $('gridInner'),
                 realTimeToggle: $('realTimeToggle'),
@@ -1279,17 +1342,19 @@
                 realTimeValue: $('realTimeValue'),
                 caretIcon: $('caretIcon'),
                 pauseBtn: $('pauseBtn'),
-                aboutModal: $('aboutModal'),
-                aboutCloseBtn: $('aboutCloseBtn'),
-                aboutMenuBtn: $('aboutMenuBtn'),
                 captureMenuBtn: $('captureMenuBtn'),
                 resetTaskBtn: $('resetTaskBtn'),
                 mainVisual: $('mainVisual'),
                 modeRingRadio: $('modeRingRadio'),
                 modeGridRadio: $('modeGridRadio'),
+                modeSelection: $('modeSelection'),
+                modeRadios: document.querySelectorAll('input[name="mode"]'),
+                infoBtn: $('infoBtn'),
+                infoModal: $('infoModal'),
+                infoCloseBtn: $('infoCloseBtn'),
             };
 
-            // ===== 任务名称编辑（input 模式） =====
+            // ===== 任务名称编辑 =====
             let isEditing = false;
 
             function enableTaskNameEdit() {
@@ -1302,7 +1367,6 @@
                 dom.taskNameInput.classList.remove('hidden');
                 dom.taskNameInput.focus();
 
-                // 光标移到文本末尾（不选中任何文字）
                 var len = dom.taskNameInput.value.length;
                 dom.taskNameInput.setSelectionRange(len, len);
             }
@@ -1461,7 +1525,6 @@
 
             function updateTaskInfoDisplay() {
                 if (isEditing) {
-                    // 编辑中只更新时长
                     dom.taskDurationDisplay.textContent = state.totalDuration > 0 ? formatDuration(state.totalDuration) :
                         '—';
                     return;
@@ -1512,7 +1575,6 @@
                     dom.gridContainer.classList.remove('active');
                     dom.gridContainer.style.display = 'none';
                     dom.percentTag.style.display = 'flex';
-                    dom.helpBtn.style.display = '';
                     const x = state.totalDuration > 0 ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     const p = calculatePerceivedProgress(x);
                     drawRing(p);
@@ -1521,7 +1583,6 @@
                     dom.gridContainer.style.display = 'block';
                     dom.gridContainer.classList.add('active');
                     dom.percentTag.style.display = 'none';
-                    dom.helpBtn.style.display = 'none';
                     const x = state.totalDuration > 0 ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     const p = calculatePerceivedProgress(x);
                     updateGrid(p);
@@ -1613,7 +1674,6 @@
                 renderAll(x, p);
 
                 dom.percentWrap.classList.add('fade-out');
-                dom.helpBtn.classList.add('hidden-btn');
                 dom.percentTag.classList.add('completed-centered');
                 updatePauseButton();
                 updatePauseVisual();
@@ -1626,6 +1686,9 @@
                 dom.taskNameInputField.value = state.taskName || '';
                 dom.taskNameInputField.focus();
                 dom.taskNameInputField.select();
+
+                updateModeSelector();
+
                 if (state.totalDuration > 0) {
                     const s = state.totalDuration;
                     if (s % 86400 === 0 && s >= 86400) { dom.durationInput.value = s / 86400;
@@ -1639,6 +1702,15 @@
                     dom.durationInput.value = 1;
                     dom.unitSelect.value = 'hours';
                 }
+            }
+
+            function updateModeSelector() {
+                const isLocked = state.isModeLocked;
+                dom.modeSelection.classList.toggle('disabled', isLocked);
+                dom.modeRadios.forEach(radio => {
+                    radio.checked = (radio.value === state.feedbackMode);
+                    radio.disabled = isLocked;
+                });
             }
 
             function closeAddPanel() { dom.addPanel.classList.remove('open'); }
@@ -1678,6 +1750,15 @@
                     return;
                 }
 
+                const selectedMode = document.querySelector('input[name="mode"]:checked');
+                if (selectedMode) {
+                    state.feedbackMode = selectedMode.value;
+                } else {
+                    state.feedbackMode = 'A';
+                }
+
+                state.isModeLocked = true;
+
                 resetState();
 
                 state.taskName = name;
@@ -1697,16 +1778,13 @@
                     dom.gridContainer.style.display = 'none';
                     dom.gridContainer.classList.remove('active');
                     dom.percentTag.style.display = 'flex';
-                    dom.helpBtn.style.display = '';
                     dom.percentWrap.classList.remove('fade-out');
-                    dom.helpBtn.classList.remove('hidden-btn');
                     dom.percentTag.classList.remove('completed-centered');
                 } else {
                     dom.ringContainer.classList.add('hidden');
                     dom.gridContainer.style.display = 'block';
                     dom.gridContainer.classList.add('active');
                     dom.percentTag.style.display = 'none';
-                    dom.helpBtn.style.display = 'none';
                 }
 
                 updateTaskInfoDisplay();
@@ -1730,7 +1808,6 @@
                 state.pauseTimestamp = null;
                 dom.mainVisual.classList.remove('paused-state');
                 dom.percentWrap.classList.remove('fade-out');
-                dom.helpBtn.classList.remove('hidden-btn');
                 dom.percentTag.classList.remove('completed-centered');
             }
 
@@ -1858,6 +1935,8 @@
                         isCompleted: state.isCompleted,
                         mode: state.mode,
                         showRealTime: state.showRealTime,
+                        feedbackMode: state.feedbackMode,
+                        isModeLocked: state.isModeLocked,
                         version: 1,
                     };
                     localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(d));
@@ -1879,12 +1958,19 @@
                     state.isCompleted = d.isCompleted || false;
                     state.mode = (d.mode === 'grid') ? 'grid' : 'ring';
                     state.showRealTime = d.showRealTime || false;
+                    state.feedbackMode = d.feedbackMode || 'A';
+                    state.isModeLocked = d.isModeLocked || false;
 
                     if (state.isCompleted) {
                         state.elapsed = state.totalDuration;
                         state.accumulatedElapsed = state.totalDuration;
                         state.isPaused = true;
                     }
+
+                    if (state.totalDuration > 0 && !state.isCompleted) {
+                        state.isModeLocked = true;
+                    }
+
                     return true;
                 } catch (e) { return false; }
             }
@@ -1895,6 +1981,7 @@
                 if (burstTimeout) clearTimeout(burstTimeout);
                 if (updateTimer) { clearInterval(updateTimer);
                     updateTimer = null; }
+
                 state.taskName = '';
                 state.totalDuration = 0;
                 state.elapsed = 0;
@@ -1903,6 +1990,7 @@
                 state.isCompleted = false;
                 state.startTimestamp = null;
                 state.pauseTimestamp = null;
+                state.isModeLocked = false;
 
                 try {
                     localStorage.removeItem(CONFIG.STORAGE_KEY);
@@ -1922,7 +2010,6 @@
                 dom.percentText.textContent = '0.0%';
                 dom.mainVisual.classList.remove('paused-state');
                 dom.percentWrap.classList.remove('fade-out');
-                dom.helpBtn.classList.remove('hidden-btn');
                 dom.percentTag.classList.remove('completed-centered');
                 drawRing(0);
                 updateGrid(0);
@@ -1952,15 +2039,12 @@
                             dom.gridContainer.style.display = 'block';
                             dom.gridContainer.classList.add('active');
                             dom.percentTag.style.display = 'none';
-                            dom.helpBtn.style.display = 'none';
                         } else {
                             dom.ringContainer.classList.remove('hidden');
                             dom.gridContainer.style.display = 'none';
                             dom.gridContainer.classList.remove('active');
                             dom.percentTag.style.display = 'flex';
-                            dom.helpBtn.style.display = '';
                             dom.percentWrap.classList.add('fade-out');
-                            dom.helpBtn.classList.add('hidden-btn');
                             dom.percentTag.classList.add('completed-centered');
                         }
                         const x = 1;
@@ -1978,13 +2062,11 @@
                             dom.gridContainer.style.display = 'block';
                             dom.gridContainer.classList.add('active');
                             dom.percentTag.style.display = 'none';
-                            dom.helpBtn.style.display = 'none';
                         } else {
                             dom.ringContainer.classList.remove('hidden');
                             dom.gridContainer.style.display = 'none';
                             dom.gridContainer.classList.remove('active');
                             dom.percentTag.style.display = 'flex';
-                            dom.helpBtn.style.display = '';
                         }
 
                         if (!state.isPaused) {
@@ -2036,13 +2118,12 @@
 
             // ===== 事件绑定 =====
             function bindEvents() {
-                // ---- 任务名称编辑（input 模式） ----
+                // ---- 任务名称编辑 ----
                 dom.taskNameDisplay.addEventListener('click', function(e) {
                     enableTaskNameEdit();
                     e.stopPropagation();
                 });
 
-                // 使用 mousedown 监听点击外部退出，避免拖拽选中时误触发
                 document.addEventListener('mousedown', function(e) {
                     if (isEditing) {
                         if (!dom.taskNameWrap.contains(e.target)) {
@@ -2110,27 +2191,17 @@
                     }
                 });
 
-                // ---- 问号 ----
-                dom.helpBtn.addEventListener('click', function() {
-                    dom.helpModal.classList.add('open');
+                // ---- 合并信息弹窗 ----
+                dom.infoBtn.addEventListener('click', function() {
+                    dom.infoModal.classList.add('open');
                 });
-                dom.helpCloseBtn.addEventListener('click', function() {
-                    dom.helpModal.classList.remove('open');
+                dom.infoCloseBtn.addEventListener('click', function() {
+                    dom.infoModal.classList.remove('open');
                 });
-                dom.helpModal.addEventListener('click', function(e) {
-                    if (e.target === this) this.classList.remove('open');
-                });
-
-                // ---- About ----
-                dom.aboutMenuBtn.addEventListener('click', function() {
-                    dom.menuOverlay.classList.remove('open');
-                    dom.aboutModal.classList.add('open');
-                });
-                dom.aboutCloseBtn.addEventListener('click', function() {
-                    dom.aboutModal.classList.remove('open');
-                });
-                dom.aboutModal.addEventListener('click', function(e) {
-                    if (e.target === this) this.classList.remove('open');
+                dom.infoModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('open');
+                    }
                 });
 
                 // ---- 图片生成 ----
@@ -2172,8 +2243,7 @@
                     }
                     if (e.key === 'Escape') {
                         dom.menuOverlay.classList.remove('open');
-                        dom.helpModal.classList.remove('open');
-                        dom.aboutModal.classList.remove('open');
+                        dom.infoModal.classList.remove('open');
                         if (dom.addPanel.classList.contains('open')) {
                             closeAddPanel();
                         }
@@ -2210,8 +2280,8 @@
                     dom.gridContainer.classList.add('active');
                     dom.ringContainer.classList.add('hidden');
                     dom.percentTag.style.display = 'none';
-                    dom.helpBtn.style.display = 'none';
                 }
+                updateModeSelector();
                 console.log('LogTime 已启动');
             });
 
