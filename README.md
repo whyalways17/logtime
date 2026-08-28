@@ -141,7 +141,7 @@ LogTime 可以直接作为静态网页运行，也可以部署至 GitHub Pages �
 
 在线体验：
 
-[LogTime](https://whyalways17.github.io/logtime/?utm_source=chatgpt.com)
+[LogTime](https://yalways17.github.io/logtime/?utm_source=chatgpt.com)
 
 ---
 
