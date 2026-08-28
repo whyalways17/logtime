@@ -549,6 +549,7 @@
             color: var(--text-muted);
         }
 
+        /* ===== 模式选择 — 启程 / 抵达 ===== */
         .mode-selection {
             margin-bottom: 16px;
             padding: 10px 12px;
@@ -580,6 +581,16 @@
             margin: 0;
             accent-color: var(--blue);
             flex-shrink: 0;
+        }
+        .mode-option .mode-name {
+            font-weight: 430;
+            letter-spacing: 0.02em;
+        }
+        .mode-option .mode-name.depart {
+            color: var(--blue);
+        }
+        .mode-option .mode-name.arrive {
+            color: var(--text);
         }
 
         .add-row {
@@ -797,7 +808,7 @@
             color: var(--text);
         }
 
-        /* ---- 模式卡片 ---- */
+        /* ---- 模式卡片：启程 / 抵达 ---- */
         .mode-cards {
             display: flex;
             flex-direction: column;
@@ -810,6 +821,10 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 12px 16px 14px;
+            transition: background 0.15s;
+        }
+        .mode-card:hover {
+            background: rgba(90, 138, 158, 0.02);
         }
 
         .mode-card-header {
@@ -823,6 +838,12 @@
             font-weight: 380;
             color: var(--text-light);
             margin-right: 2px;
+        }
+        .mode-card-header .mode-badge.depart-badge {
+            color: var(--blue);
+        }
+        .mode-card-header .mode-badge.arrive-badge {
+            color: var(--text-light);
         }
 
         .mode-card-formula {
@@ -1143,15 +1164,16 @@
                 </div>
             </div>
 
+            <!-- ===== 模式选择：启程 / 抵达 ===== -->
             <div class="mode-selection" id="modeSelection">
                 <div class="mode-label">时间反馈模式</div>
                 <label class="mode-option">
                     <input type="radio" name="mode" value="A" checked />
-                    适合长周期任务
+                    <span class="mode-name depart">启程</span>
                 </label>
                 <label class="mode-option">
                     <input type="radio" name="mode" value="B" />
-                    适合短时间任务
+                    <span class="mode-name arrive">抵达</span>
                 </label>
             </div>
 
@@ -1220,7 +1242,7 @@
         </div>
     </div>
 
-    <!-- ===== 合并弹窗 - 文案已按要求修改 ===== -->
+    <!-- ===== 合并弹窗：启程 / 抵达 ===== -->
     <div class="modal-overlay" id="infoModal">
         <div class="modal-content">
             <div class="modal-title">关于 LogTime</div>
@@ -1228,22 +1250,24 @@
             <div class="modal-intro">
                 <p>人对时间的感受并不均匀</p>
                 <p>同样的一分钟，在任务开始和结束时，心理重量可能不同</p>
-                <p class="highlight"><strong>LogTime 让时间的视觉呈现转为非线性</strong><br />用视觉的快慢，平衡感知的快慢</p>
+                <p class="highlight"><strong>LogTime 让时间的视觉呈现转为非线性，</strong><br />用视觉的快慢，平衡感知的快慢</p>
             </div>
 
             <div class="mode-cards">
+                <!-- 启程 -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge">A</span> · 适合长周期任务
+                        <span class="mode-badge depart-badge">A</span> · 启程
                     </div>
                     <div class="mode-card-formula">
                         P<sub>A</sub>(x) = ln(1 + 2x) / ln&thinsp;3
                     </div>
                 </div>
 
+                <!-- 抵达 -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge">B</span> · 适合短时间任务
+                        <span class="mode-badge arrive-badge">B</span> · 抵达
                     </div>
                     <div class="mode-card-formula">
                         P<sub>B</sub>(x) = x²
