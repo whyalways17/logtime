@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>LogTime</title>
     <style>
+        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1300,7 +1301,10 @@
                 dom.taskNameDisplay.classList.add('hidden');
                 dom.taskNameInput.classList.remove('hidden');
                 dom.taskNameInput.focus();
-                dom.taskNameInput.select();
+
+                // 光标移到文本末尾（不选中任何文字）
+                var len = dom.taskNameInput.value.length;
+                dom.taskNameInput.setSelectionRange(len, len);
             }
 
             function disableTaskNameEdit(save) {
@@ -1749,28 +1753,28 @@
                     const p = calculatePerceivedProgress(x);
                     const per = formatPercent(p);
                     wrap.innerHTML = `
-<div style="border-bottom:1px solid #e8e6e0;padding-bottom:16px;margin-bottom:16px;">
-    <div style="font-size:1.15rem;color:#2d2d2d;">${tname}</div>
-    <div style="font-size:0.85rem;color:#8a8a8a;">${dur}</div>
-</div>
-<div style="display:flex;align-items:center;justify-content:center;padding:24px 0;min-height:300px;">
-${state.mode==='ring'?`
-<div style="width:240px;height:240px;position:relative;">
-    <canvas id="capCanv" width="480" height="480" style="width:100%;height:100%;border-radius:50%;"></canvas>
-    ${comp?`<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.8rem;">${per}</div>`:`<div style="position:absolute;right:-4px;bottom:-4px;font-size:0.75rem;color:#b5b5b5;">${per}</div>`}
-</div>
-`:`
-<div style="width:100%;max-width:400px;aspect-ratio:20/10;">
-<div style="display:grid;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(10,1fr);gap:2px;height:100%;">
-${Array.from({length:200},(_,i)=>`<div style="background:${i<Math.round(p*200)?'#5a8a9e':'#eae8e2'};aspect-ratio:1/1;border-radius:1px;"></div>`).join('')}
-</div>
-</div>
-`}
-</div>
-<div style="border-top:1px solid #e8e6e0;padding-top:12px;display:flex;justify-content:space-between;font-size:0.75rem;color:#b5b5b5;">
-<span>LogTime</span><span>${comp?'✓ 已完成':''}</span>
-</div>
-`;
+        <div style="border-bottom:1px solid #e8e6e0;padding-bottom:16px;margin-bottom:16px;">
+            <div style="font-size:1.15rem;color:#2d2d2d;">${tname}</div>
+            <div style="font-size:0.85rem;color:#8a8a8a;">${dur}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;padding:24px 0;min-height:300px;">
+        ${state.mode==='ring'?`
+        <div style="width:240px;height:240px;position:relative;">
+            <canvas id="capCanv" width="480" height="480" style="width:100%;height:100%;border-radius:50%;"></canvas>
+            ${comp?`<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.8rem;">${per}</div>`:`<div style="position:absolute;right:-4px;bottom:-4px;font-size:0.75rem;color:#b5b5b5;">${per}</div>`}
+        </div>
+        `:`
+        <div style="width:100%;max-width:400px;aspect-ratio:20/10;">
+        <div style="display:grid;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(10,1fr);gap:2px;height:100%;">
+        ${Array.from({length:200},(_,i)=>`<div style="background:${i<Math.round(p*200)?'#5a8a9e':'#eae8e2'};aspect-ratio:1/1;border-radius:1px;"></div>`).join('')}
+        </div>
+        </div>
+        `}
+        </div>
+        <div style="border-top:1px solid #e8e6e0;padding-top:12px;display:flex;justify-content:space-between;font-size:0.75rem;color:#b5b5b5;">
+        <span>LogTime</span><span>${comp?'✓ 已完成':''}</span>
+        </div>
+        `;
                     document.body.appendChild(wrap);
                     if (state.mode === 'ring') {
                         const canv = wrap.querySelector('#capCanv');
@@ -2038,28 +2042,22 @@ ${Array.from({length:200},(_,i)=>`<div style="background:${i<Math.round(p*200)?'
                     e.stopPropagation();
                 });
 
-                dom.taskNameInput.addEventListener('blur', function() {
-                    setTimeout(function() {
-                        disableTaskNameEdit(true);
-                    }, 10);
+                // 使用 mousedown 监听点击外部退出，避免拖拽选中时误触发
+                document.addEventListener('mousedown', function(e) {
+                    if (isEditing) {
+                        if (!dom.taskNameWrap.contains(e.target)) {
+                            disableTaskNameEdit(true);
+                        }
+                    }
                 });
 
                 dom.taskNameInput.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        this.blur();
+                        disableTaskNameEdit(true);
                     }
                     if (e.key === 'Escape') {
                         disableTaskNameEdit(false);
-                    }
-                });
-
-                // 点击外部退出编辑
-                document.addEventListener('click', function(e) {
-                    if (isEditing) {
-                        if (!dom.taskNameWrap.contains(e.target)) {
-                            disableTaskNameEdit(true);
-                        }
                     }
                 });
 
