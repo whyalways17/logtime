@@ -55,6 +55,7 @@ $$
 * 刷新页面后恢复任务
 * 生成当前状态图片
 * 响应式移动端与桌面端界面
+* 本地保存记录
 
 ## 在线体验
 
@@ -62,8 +63,7 @@ $$
 
 ## 技术
 
-HTML · CSS · Vanilla JavaScript · Canvas API · CSS Grid · localStorage · html2canvas
-
+HTML 
 ---
 
-**LogTime · v1.0 · 2026**
+**LogTime · v1.1.0**
