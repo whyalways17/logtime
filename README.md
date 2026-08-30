@@ -58,7 +58,7 @@ $$
 
 ## 在线体验
 
-[LogTime](https://yalways17.github.io/LogTime/)
+[LogTime](https://yalways17.github.io/logtime/)
 
 ## 技术
 
