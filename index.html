@@ -879,17 +879,18 @@
             max-width: 440px;
         }
         .history-modal .modal-title {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .history-modal .modal-sub {
-            margin-bottom: 12px;
-            font-size: 0.8rem;
+            margin-bottom: 14px;
+            font-size: 0.75rem;
             color: var(--text-muted);
+            letter-spacing: 0.02em;
         }
         .history-list {
-            max-height: 320px;
+            max-height: 340px;
             overflow-y: auto;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .history-list::-webkit-scrollbar {
             width: 3px;
@@ -899,15 +900,12 @@
             border-radius: 2px;
         }
         .history-item {
-            padding: 8px 2px 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border);
-            font-size: 0.82rem;
-            color: var(--text-light);
-            line-height: 1.5;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
+            align-items: center;
+            gap: 12px;
         }
         .history-item:last-child {
             border-bottom: none;
@@ -917,35 +915,61 @@
             min-width: 0;
         }
         .history-item .h-name {
+            font-size: 0.92rem;
             color: var(--text);
             font-weight: 430;
             word-break: break-word;
         }
-        .history-item .h-meta {
+        .history-item .h-time {
             font-size: 0.7rem;
             color: var(--text-muted);
             margin-top: 1px;
         }
-        .history-item .h-right {
+        .history-item .h-del {
             flex-shrink: 0;
-            text-align: right;
-            font-size: 0.7rem;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
             color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: var(--radius);
+            transition: background 0.15s, color 0.15s;
+            line-height: 1;
         }
-        .history-item .h-mode {
-            display: inline-block;
-            padding: 0 6px;
-            border-radius: 3px;
-            background: var(--gray-light);
-            font-size: 0.65rem;
-            color: var(--text-light);
-            letter-spacing: 0.02em;
+        .history-item .h-del:hover {
+            background: rgba(192, 57, 43, 0.06);
+            color: #c0392b;
         }
         .history-empty {
-            padding: 24px 0;
+            padding: 28px 0;
             text-align: center;
             color: var(--text-muted);
             font-size: 0.85rem;
+        }
+
+        /* ===== 完成提示 ===== */
+        .save-toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.4s ease;
+            transform: translateY(10px);
+            pointer-events: none;
+            letter-spacing: 0.04em;
+            background: var(--bg-card);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            z-index: 300;
+        }
+        .save-toast.visible {
+            opacity: 0.6;
+            transform: translateY(0);
         }
 
         .burst-emoji {
@@ -1082,11 +1106,22 @@
                 font-size: 1rem;
             }
             .history-item {
-                font-size: 0.75rem;
-                padding: 6px 0;
+                padding: 8px 0;
             }
-            .history-item .h-meta {
+            .history-item .h-name {
+                font-size: 0.85rem;
+            }
+            .history-item .h-time {
                 font-size: 0.6rem;
+            }
+            .history-item .h-del {
+                font-size: 0.8rem;
+            }
+            .save-toast {
+                bottom: 70px;
+                right: 14px;
+                font-size: 0.6rem;
+                padding: 4px 12px;
             }
         }
 
@@ -1343,7 +1378,7 @@
     <div class="modal-overlay history-modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-title">历史记录</div>
-            <div class="modal-sub">已完成任务（≥ 5 分钟）</div>
+            <div class="modal-sub">已完成任务（≥ 1 分钟）</div>
             <div class="history-list" id="historyList">
                 <!-- 由 JavaScript 动态渲染 -->
             </div>
@@ -1352,6 +1387,9 @@
             </div>
         </div>
     </div>
+
+    <!-- ===== 完成提示（右下角） ===== -->
+    <div id="saveToast" class="save-toast">✓ 记录已保存</div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
     </script>
@@ -1447,7 +1485,29 @@
                 historyModal: $('historyModal'),
                 historyCloseBtn: $('historyCloseBtn'),
                 historyList: $('historyList'),
+                saveToast: $('saveToast'),
             };
+
+            // ===== 显示保存提示（右下角淡入淡出） =====
+            let toastTimer = null;
+
+            function showSaveToast() {
+                const el = dom.saveToast;
+                // 重置动画
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toastTimer = null;
+                }
+                el.classList.remove('visible');
+                // 强制回流后显示
+                void el.offsetWidth;
+                el.classList.add('visible');
+                // 3.5秒后淡出
+                toastTimer = setTimeout(function() {
+                    el.classList.remove('visible');
+                    toastTimer = null;
+                }, 3500);
+            }
 
             // ===== 历史记录 =====
             function getHistory() {
@@ -1468,11 +1528,23 @@
                         id: Date.now() + '_' + Math.random().toString(36).slice(2, 6),
                         completedAt: new Date().toISOString()
                     });
-                    // 只保留最近 200 条
-                    if (history.length > 200) {
-                        history.splice(0, history.length - 200);
+                    if (history.length > 500) {
+                        history.splice(0, history.length - 500);
                     }
                     localStorage.setItem(CONFIG.HISTORY_KEY, JSON.stringify(history));
+                    // 保存成功后显示提示
+                    showSaveToast();
+                } catch (e) { /* ignore */ }
+            }
+
+            function deleteHistoryItem(id) {
+                try {
+                    let history = getHistory();
+                    history = history.filter(function(item) {
+                        return item.id !== id;
+                    });
+                    localStorage.setItem(CONFIG.HISTORY_KEY, JSON.stringify(history));
+                    renderHistory();
                 } catch (e) { /* ignore */ }
             }
 
@@ -1483,14 +1555,9 @@
                     list.innerHTML = '<div class="history-empty">暂无记录</div>';
                     return;
                 }
-                // 从新到旧显示
                 const sorted = [...history].reverse();
                 let html = '';
                 sorted.forEach(function(item) {
-                    const modeMap = { 'A': '启程', 'B': '抵达', 'C': 'Linear' };
-                    const modeLabel = modeMap[item.mode] || item.mode || '—';
-                    const durationStr = formatDuration(item.duration || 0);
-                    const elapsedStr = formatDuration(item.elapsed || 0);
                     const dateStr = item.completedAt ? new Date(item.completedAt).toLocaleString('zh-CN', {
                         month: '2-digit',
                         day: '2-digit',
@@ -1499,19 +1566,26 @@
                     }) : '—';
                     const name = item.taskName || '未命名任务';
                     html += `
-                        <div class="history-item">
+                        <div class="history-item" data-id="${item.id}">
                             <div class="h-left">
                                 <div class="h-name">${name}</div>
-                                <div class="h-meta">
-                                    <span class="h-mode">${modeLabel}</span>
-                                    &nbsp;·&nbsp;计划 ${durationStr} · 用时 ${elapsedStr}
-                                </div>
+                                <div class="h-time">${dateStr}</div>
                             </div>
-                            <div class="h-right">${dateStr}</div>
+                            <button class="h-del" data-id="${item.id}" aria-label="删除">✕</button>
                         </div>
                     `;
                 });
                 list.innerHTML = html;
+
+                list.querySelectorAll('.h-del').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        if (confirm('确定要删除这条记录吗？')) {
+                            deleteHistoryItem(id);
+                        }
+                    });
+                });
             }
 
             // ===== 任务名称编辑 =====
@@ -1821,18 +1895,16 @@
             }
 
             function onComplete() {
-                triggerCelebrationBurst();
-
-                // 保存历史记录：时长 ≥ 5 分钟（300 秒）
-                if (state.totalDuration >= 300) {
+                // 先保存历史记录（确保不被烟花中断）
+                if (state.totalDuration >= 60) {
                     const entry = {
                         taskName: state.taskName.trim() || '未命名任务',
-                        duration: state.totalDuration,
-                        elapsed: state.elapsed,
-                        mode: state.feedbackMode,
                     };
                     saveHistoryEntry(entry);
                 }
+
+                // 播放烟花（独立执行）
+                triggerCelebrationBurst();
 
                 state.isCompleted = true;
                 state.isPaused = true;
@@ -2488,6 +2560,7 @@
                 renderHistory,
                 getHistory,
                 saveHistoryEntry,
+                deleteHistoryItem,
             };
 
         })();
