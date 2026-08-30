@@ -3,13 +3,9 @@
 <head>
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-
     <link rel="manifest" href="./site.webmanifest">
-
     <meta name="theme-color" content="#2265FC">
-    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>LogTime</title>
@@ -558,7 +554,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== 模式选择 — 启程 / 抵达 ===== */
+        /* ===== 模式选择：启程 / 抵达 / Linear ===== */
         .mode-selection {
             margin-bottom: 16px;
             padding: 10px 12px;
@@ -594,12 +590,10 @@
         .mode-option .mode-name {
             font-weight: 430;
             letter-spacing: 0.02em;
+            color: var(--text);
         }
         .mode-option .mode-name.depart {
             color: var(--blue);
-        }
-        .mode-option .mode-name.arrive {
-            color: var(--text);
         }
 
         .add-row {
@@ -817,7 +811,7 @@
             color: var(--text);
         }
 
-        /* ---- 模式卡片：启程 / 抵达 ---- */
+        /* ---- 模式卡片 ---- */
         .mode-cards {
             display: flex;
             flex-direction: column;
@@ -850,9 +844,6 @@
         }
         .mode-card-header .mode-badge.depart-badge {
             color: var(--blue);
-        }
-        .mode-card-header .mode-badge.arrive-badge {
-            color: var(--text-light);
         }
 
         .mode-card-formula {
@@ -1173,7 +1164,7 @@
                 </div>
             </div>
 
-            <!-- ===== 模式选择：启程 / 抵达 ===== -->
+            <!-- ===== 模式选择：启程 / 抵达 / Linear ===== -->
             <div class="mode-selection" id="modeSelection">
                 <div class="mode-label">时间反馈模式</div>
                 <label class="mode-option">
@@ -1182,7 +1173,11 @@
                 </label>
                 <label class="mode-option">
                     <input type="radio" name="mode" value="B" />
-                    <span class="mode-name arrive">抵达</span>
+                    <span class="mode-name">抵达</span>
+                </label>
+                <label class="mode-option">
+                    <input type="radio" name="mode" value="C" />
+                    <span class="mode-name">Linear</span>
                 </label>
             </div>
 
@@ -1251,7 +1246,7 @@
         </div>
     </div>
 
-    <!-- ===== 合并弹窗：启程 / 抵达 ===== -->
+    <!-- ===== 合并弹窗：启程 / 抵达 / Linear ===== -->
     <div class="modal-overlay" id="infoModal">
         <div class="modal-content">
             <div class="modal-title">关于 LogTime</div>
@@ -1276,10 +1271,20 @@
                 <!-- 抵达 -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge arrive-badge">B</span> · 抵达
+                        <span class="mode-badge">B</span> · 抵达
                     </div>
                     <div class="mode-card-formula">
                         P<sub>B</sub>(x) = x²
+                    </div>
+                </div>
+
+                <!-- Linear -->
+                <div class="mode-card">
+                    <div class="mode-card-header">
+                        <span class="mode-badge">C</span> · Linear
+                    </div>
+                    <div class="mode-card-formula">
+                        P<sub>C</sub>(x) = x
                     </div>
                 </div>
             </div>
@@ -1326,7 +1331,7 @@
                 mode: 'ring',
                 showRealTime: false,
                 isInitialized: false,
-                feedbackMode: 'A',
+                feedbackMode: 'A', // A: 启程, B: 抵达, C: Linear
                 isModeLocked: false,
             };
 
@@ -1339,7 +1344,10 @@
                 if (state.feedbackMode === 'B') {
                     return x * x;
                 }
-
+                if (state.feedbackMode === 'C') {
+                    return x;
+                }
+                // 默认 A：启程
                 return Math.log(1 + a * x) / Math.log(1 + a);
             }
 
