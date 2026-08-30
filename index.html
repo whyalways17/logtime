@@ -925,6 +925,12 @@
             color: var(--text-muted);
             margin-top: 1px;
         }
+        .history-item .h-duration {
+            font-size: 0.68rem;
+            color: var(--text-light);
+            margin-top: 3px;
+            letter-spacing: 0.01em;
+        }
         .history-item .h-del {
             flex-shrink: 0;
             background: none;
@@ -1163,6 +1169,9 @@
             }
             .history-item .h-time {
                 font-size: 0.6rem;
+            }
+            .history-item .h-duration {
+                font-size: 0.58rem;
             }
             .history-item .h-del {
                 font-size: 0.8rem;
@@ -1417,7 +1426,7 @@
                 </div>
             </div>
 
-            <div class="modal-version">v1.2.0</div>
+            <div class="modal-version">v.1.2.0</div>
 
             <div class="modal-close">
                 <button id="infoCloseBtn">关闭</button>
@@ -1702,11 +1711,13 @@
                         month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
                     }) : '—';
                     const name = item.taskName || '未命名任务';
+                    const duration = formatDuration(item.elapsed || item.totalDuration || 0);
                     html += `
                         <div class="history-item" data-id="${item.id}">
                             <div class="h-left">
                                 <div class="h-name">${name}</div>
                                 <div class="h-time">${dateStr}</div>
+                                <div class="h-duration">本次时长 · ${duration}</div>
                             </div>
                             <button class="h-del" data-id="${item.id}" aria-label="删除">✕</button>
                         </div>`;
