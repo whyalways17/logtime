@@ -1,5 +1,5 @@
 # LogTime
-> **Time is linear. Perception is not.**
+
 ⏱️ LogTime 是一个以**非线性节奏呈现时间**的计时器。
 真实时间始终匀速流逝，而 LogTime 通过数学模型改变时间的视觉呈现。
 
