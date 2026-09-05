@@ -490,11 +490,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            padding: 13px 16px;
+            padding: 10px 14px;
             background: var(--bg-frost);
             border: 1px solid var(--border);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 22px;
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
@@ -502,113 +503,120 @@
             z-index: 10;
             position: relative;
         }
+        /* 显示方式：iOS 26 液态玻璃分段控件（左下角） */
+        .mode-segmented {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 3px;
+            border-radius: 999px;
+            background: rgba(127, 127, 127, 0.14);
+            -webkit-backdrop-filter: blur(14px) saturate(180%);
+            backdrop-filter: blur(14px) saturate(180%);
+            border: 1px solid rgba(127, 127, 127, 0.18);
+        }
+        .seg-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 30px;
+            border: none;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.12s ease-out, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+        .seg-btn svg {
+            width: 17px;
+            height: 17px;
+            display: block;
+        }
+        .seg-btn:active {
+            transform: scale(0.9);
+        }
+        .seg-btn.active {
+            color: var(--blue);
+            background: var(--bg-solid);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+        }
+        /* 实际进度（右侧，低调信息式） */
+        .real-time-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 2px;
+        }
         .real-time-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            font-size: 0.8rem;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
             color: var(--text-light);
             cursor: pointer;
-            padding: 6px 10px;
+            padding: 0;
             border-radius: 999px;
             background: none;
             border: none;
             font-family: var(--font);
-            transition: background 0.15s ease, color 0.15s ease;
+            transition: color 0.2s ease;
         }
         .real-time-toggle:hover {
-            background: var(--gray-light);
             color: var(--text);
-        }
-        .real-time-toggle .caret {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            color: var(--text-muted);
-            transition: transform 0.25s var(--ease-spring);
         }
         .real-time-toggle .toggle-icon {
             color: var(--text-muted);
-            opacity: 0.85;
             display: block;
+            transition: color 0.2s ease;
         }
-        .real-time-toggle .caret svg {
-            width: 14px;
-            height: 14px;
-            display: block;
-        }
-        .real-time-toggle .caret.open {
-            transform: rotate(180deg);
+        .real-time-toggle:hover .toggle-icon {
+            color: var(--text);
         }
         .real-time-display {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.78rem;
+            color: var(--text-light);
             font-variant-numeric: tabular-nums;
-            padding: 2px 0 2px 6px;
-            opacity: 0;
-            transition: opacity 0.25s, max-height 0.25s;
-            max-height: 0;
-            overflow: hidden;
-            width: 100%;
-            text-align: right;
             letter-spacing: 0.01em;
+            padding: 0 6px;
+            white-space: nowrap;
+            opacity: 0;
+            max-width: 0;
+            overflow: hidden;
+            transition: opacity 0.2s ease, max-width 0.25s ease, padding 0.25s ease;
         }
         .real-time-display.visible {
             opacity: 1;
-            max-height: 30px;
-        }
-        .real-time-display .label {
-            color: var(--text-muted);
+            max-width: 90px;
         }
         .real-time-display .value {
-            color: var(--text-light);
-            font-weight: 500;
+            color: var(--text);
+            font-weight: 600;
         }
-        .pause-btn {
-            background: var(--bg-solid);
-            border: 1px solid var(--border);
+        /* 重置胶囊（仅完成态出现） */
+        .reset-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
             border-radius: 999px;
-            padding: 10px 26px;
-            font-size: 0.9rem;
+            padding: 8px 16px;
+            font-size: 0.82rem;
             font-weight: 500;
             letter-spacing: 0.01em;
-            color: var(--text);
+            color: var(--danger);
+            background: var(--danger-pale);
             cursor: pointer;
             font-family: var(--font);
-            transition: transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-            min-width: 88px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
+            transition: transform 0.1s ease-out, background 0.2s ease;
         }
-        .pause-btn:hover {
-            background: var(--bg-solid);
+        .reset-capsule:hover {
+            background: rgba(255, 59, 48, 0.14);
         }
-        .pause-btn:active {
-            transform: scale(0.96);
-        }
-        .pause-btn.running {
-            color: var(--blue);
-            border-color: rgba(0, 122, 255, 0.25);
-            background: var(--blue-pale);
-        }
-        .pause-btn.paused {
-            color: #fff;
-            background: var(--blue);
-            border-color: var(--blue);
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
-        }
-        .pause-btn.paused:hover {
-            background: var(--blue-light);
-            border-color: var(--blue-light);
-        }
-        .pause-btn.reset-btn {
-            color: var(--danger);
-            border-color: transparent;
-            background: var(--danger-pale);
-            box-shadow: none;
-        }
-        .pause-btn.reset-btn:hover {
-            background: var(--danger-pale);
+        .reset-capsule:active {
+            transform: scale(0.95);
         }
         .bottom-left {
             display: flex;
@@ -619,7 +627,8 @@
         .bottom-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            margin-left: auto;
         }
         .add-panel {
             background: var(--bg-card);
@@ -1061,26 +1070,16 @@
             line-height: 1.8;
             padding: 6px 0 2px;
         }
-        .mode-card-formula .frac {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            vertical-align: middle;
-            margin: 0 4px;
-            line-height: 1.2;
+        .mode-card-formula .katex {
+            font-size: 1.12em;
+            color: inherit;
         }
-        .mode-card-formula .frac-n {
-            font-size: 0.8em;
-            padding: 0 7px 3px;
-            border-bottom: 1px solid currentColor;
+        .mode-card-formula .katex-display {
+            margin: 0.25em 0 0.1em;
         }
-        .mode-card-formula .frac-d {
-            font-size: 0.8em;
-            padding: 3px 7px 0;
-        }
-        .mode-card-formula sup {
-            font-size: 0.75em;
-            color: var(--blue);
+        .mode-card-formula .katex-display > .katex {
+            font-size: 1.12em;
+            white-space: normal;
         }
         .modal-version {
             text-align: right;
@@ -1440,11 +1439,6 @@
                 gap: 6px 10px;
                 border-radius: 18px;
             }
-            .pause-btn {
-                padding: 9px 20px;
-                font-size: 0.85rem;
-                min-width: 80px;
-            }
             .menu-panel {
                 min-width: 190px;
                 padding: 14px 14px 12px;
@@ -1597,6 +1591,7 @@
         }
 
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 </head>
 <body>
     <div id="app">
@@ -1688,15 +1683,25 @@
 
         <div class="bottom-controls">
             <div class="bottom-left">
-                <button class="real-time-toggle" id="realTimeToggle">
-                    <svg class="toggle-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 1 9 9h-9z"></path></svg><span class="caret" id="caretIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                </button>
-                <div id="realTimeDisplay" class="real-time-display">
-                    <span class="value" id="realTimeValue"></span>
+                <div class="mode-segmented" id="modeSegmented" role="group" aria-label="显示方式">
+                    <button class="seg-btn active" id="modeRingRadio" data-mode="ring" aria-label="圆环显示">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"></circle></svg>
+                    </button>
+                    <button class="seg-btn" id="modeGridRadio" data-mode="grid" aria-label="方格显示">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"></rect><rect x="13" y="4" width="7" height="7" rx="1.6"></rect><rect x="4" y="13" width="7" height="7" rx="1.6"></rect><rect x="13" y="13" width="7" height="7" rx="1.6"></rect></svg>
+                    </button>
                 </div>
             </div>
             <div class="bottom-right">
-                <button class="pause-btn" id="pauseBtn">暂停</button>
+                <div class="real-time-wrap">
+                    <button class="real-time-toggle" id="realTimeToggle" aria-label="实际进度">
+                        <svg class="toggle-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 1 9 9h-9z"></path></svg>
+                    </button>
+                    <div id="realTimeDisplay" class="real-time-display">
+                        <span class="value" id="realTimeValue"></span>
+                    </div>
+                </div>
+                <button class="reset-capsule" id="resetCapsuleBtn" style="display:none">重置</button>
             </div>
         </div>
     </div>
@@ -1706,15 +1711,6 @@
             <button class="menu-close" id="menuClose" aria-label="关闭">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
                 </button>
-            <div class="menu-section">
-                <div class="menu-label">显示方式</div>
-                <div class="menu-option" data-mode="ring">
-                    <span class="radio active" id="modeRingRadio"></span> 圆环
-                </div>
-                <div class="menu-option" data-mode="grid">
-                    <span class="radio" id="modeGridRadio"></span> 方格
-                </div>
-            </div>
             <div class="menu-section">
                     <div class="menu-label">外观</div>
                     <div class="menu-option appearance-option" data-appearance="light"><span class="radio" id="appearanceLightRadio"></span> 浅色</div>
@@ -1748,7 +1744,7 @@
                         <span class="mode-name">启程</span>
                         <span class="mode-badge depart-badge">A</span>
                     </div>
-                    <div class="mode-card-formula">P(x) = <span class="frac"><span class="frac-n">ln(1 + 2x)</span><span class="frac-d">ln 3</span></span></div>
+                    <div class="mode-card-formula">$$P(x)=\dfrac{\ln(1+2x)}{\ln 3}$$</div>
                 </div>
 
                 <div class="mode-card">
@@ -1756,7 +1752,7 @@
                         <span class="mode-name">抵达</span>
                         <span class="mode-badge">B</span>
                     </div>
-                    <div class="mode-card-formula">P(x) = x<sup>2</sup></div>
+                    <div class="mode-card-formula">$$P(x)=x^2$$</div>
                 </div>
 
                 <div class="mode-card">
@@ -1764,7 +1760,7 @@
                         <span class="mode-name">恒行</span>
                         <span class="mode-badge">C</span>
                     </div>
-                    <div class="mode-card-formula">P(x) = x</div>
+                    <div class="mode-card-formula">$$P(x)=x$$</div>
                 </div>
             </div>
 
@@ -1820,6 +1816,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script>
+        // 渲染"关于"弹窗中的 LaTeX 公式（KaTeX），未加载时静默跳过
+        function initLogtimeKatex() {
+            if (typeof renderMathInElement !== 'function') return;
+            try {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '\\(', right: '\\)', display: false }
+                    ],
+                    throwOnError: false
+                });
+            } catch (e) { /* 忽略渲染异常 */ }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLogtimeKatex);
+        } else {
+            initLogtimeKatex();
+        }
     </script>
     <script>
         (function() {
@@ -1915,8 +1933,7 @@
                 realTimeToggle: $('realTimeToggle'),
                 realTimeDisplay: $('realTimeDisplay'),
                 realTimeValue: $('realTimeValue'),
-                caretIcon: $('caretIcon'),
-                pauseBtn: $('pauseBtn'),
+                resetCapsuleBtn: $('resetCapsuleBtn'),
                 captureMenuBtn: $('captureMenuBtn'),
                 historyMenuBtn: $('historyMenuBtn'),
                 resetTaskBtn: $('resetTaskBtn'),
@@ -2297,24 +2314,8 @@
             }
 
             function updatePauseButton() {
-                if (state.isCompleted) {
-                    dom.pauseBtn.textContent = '重置';
-                    dom.pauseBtn.classList.remove('running', 'paused');
-                    dom.pauseBtn.classList.add('reset-btn');
-                    dom.pauseBtn.disabled = false;
-                    return;
-                }
-                dom.pauseBtn.classList.remove('reset-btn');
-                dom.pauseBtn.disabled = false;
-                if (state.isPaused) {
-                    dom.pauseBtn.textContent = '继续';
-                    dom.pauseBtn.classList.add('paused');
-                    dom.pauseBtn.classList.remove('running');
-                } else {
-                    dom.pauseBtn.textContent = '暂停';
-                    dom.pauseBtn.classList.add('running');
-                    dom.pauseBtn.classList.remove('paused');
-                }
+                // 暂停/继续入口已移除；仅完成态显示"重置"胶囊
+                dom.resetCapsuleBtn.style.display = state.isCompleted ? '' : 'none';
             }
 
             function updatePauseVisual() {
@@ -2323,7 +2324,6 @@
 
             function updateRealTimeVisibility() {
                 dom.realTimeDisplay.classList.toggle('visible', state.showRealTime);
-                dom.caretIcon.classList.toggle('open', state.showRealTime);
             }
 
             // ===== 模式切换 =====
@@ -2347,7 +2347,7 @@
                     updateGrid(p);
                 }
 
-                document.querySelectorAll('.menu-option[data-mode] .radio').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.seg-btn[data-mode]').forEach(el => el.classList.remove('active'));
                 if (mode === 'ring') dom.modeRingRadio.classList.add('active');
                 else dom.modeGridRadio.classList.add('active');
                 saveState();
@@ -2771,7 +2771,7 @@
                     dom.emptyState.classList.remove('hidden');
                     dom.ringContainer.classList.add('hidden');
                     dom.gridContainer.style.display = 'none';
-                    dom.pauseBtn.disabled = true;
+                    dom.resetCapsuleBtn.style.display = 'none';
                     updateTaskInfoDisplay();
                     return;
                 }
@@ -2790,9 +2790,7 @@
                 if (state.isCompleted) {
                     renderAll(1, 1);
                     dom.percentWrap.classList.add('fade-out');
-                    dom.pauseBtn.textContent = '重置';
-                    dom.pauseBtn.classList.add('reset-btn');
-                    dom.pauseBtn.disabled = false;
+                    dom.resetCapsuleBtn.style.display = '';
                 } else {
                     const x = state.totalDuration ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     renderAll(x, calculatePerceivedProgress(x));
@@ -2867,9 +2865,7 @@
                 dom.percentTag.style.display = 'none';
                 dom.taskNameDisplay.textContent = '未命名任务';
                 dom.taskDurationDisplay.textContent = '—';
-                dom.pauseBtn.textContent = '暂停';
-                dom.pauseBtn.disabled = true;
-                dom.pauseBtn.classList.remove('running', 'paused', 'reset-btn');
+                dom.resetCapsuleBtn.style.display = 'none';
                 dom.realTimeValue.textContent = '';
                 dom.percentText.textContent = '';
                 dom.mainVisual.classList.remove('paused-state');
@@ -3001,9 +2997,7 @@
                         const p = calculatePerceivedProgress(1);
                         renderAll(x, p);
                         updateTaskInfoDisplay();
-                        dom.pauseBtn.textContent = '重置';
-                        dom.pauseBtn.classList.add('reset-btn');
-                        dom.pauseBtn.disabled = false;
+                        dom.resetCapsuleBtn.style.display = '';
                         dom.mainVisual.classList.remove('paused-state');
                     } else {
                         dom.ringContainer.classList.remove('hidden');
@@ -3036,8 +3030,7 @@
                     setMode(state.mode);
                     updateRealTimeVisibility();
 
-                    document.querySelectorAll('.menu-option[data-mode] .radio').forEach(el => el.classList.remove(
-                    'active'));
+                    document.querySelectorAll('.seg-btn[data-mode]').forEach(el => el.classList.remove('active'));
                     if (state.mode === 'ring') dom.modeRingRadio.classList.add('active');
                     else dom.modeGridRadio.classList.add('active');
 
@@ -3052,15 +3045,13 @@
                 dom.percentTag.style.display = 'none';
                 dom.taskNameDisplay.textContent = '未命名任务';
                 dom.taskDurationDisplay.textContent = '—';
-                dom.pauseBtn.textContent = '暂停';
-                dom.pauseBtn.disabled = true;
-                dom.pauseBtn.classList.remove('reset-btn');
+                dom.resetCapsuleBtn.style.display = 'none';
 
                 state.mode = 'ring';
                 state.showRealTime = false;
                 updateRealTimeVisibility();
 
-                document.querySelectorAll('.menu-option[data-mode] .radio').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.seg-btn[data-mode]').forEach(el => el.classList.remove('active'));
                 dom.modeRingRadio.classList.add('active');
 
                 updateBottomControls();
@@ -3136,10 +3127,9 @@
                 });
 
                 // ---- 菜单选项: 模式 ----
-                document.querySelectorAll('.menu-option[data-mode]').forEach(function(el) {
+                document.querySelectorAll('.seg-btn[data-mode]').forEach(function(el) {
                     el.addEventListener('click', function() {
                         setMode(this.dataset.mode);
-                        dom.menuOverlay.classList.remove('open');
                     });
                 });
 
@@ -3151,7 +3141,7 @@
                 });
 
                 // ---- 暂停 ----
-                dom.pauseBtn.addEventListener('click', togglePause);
+                dom.resetCapsuleBtn.addEventListener('click', togglePause);
 
                 // ---- 添加任务 ----
                 dom.emptyAddBtn.addEventListener('click', openAddPanel);
@@ -3276,9 +3266,7 @@
                     dom.ringContainer.classList.add('hidden');
                     dom.gridContainer.style.display = 'none';
                     dom.gridContainer.classList.remove('active');
-                    dom.pauseBtn.disabled = true;
-                    dom.pauseBtn.textContent = '暂停';
-                    dom.pauseBtn.classList.remove('reset-btn');
+                    dom.resetCapsuleBtn.style.display = 'none';
                 }
                 if (state.mode === 'grid' && state.totalDuration > 0) {
                     dom.gridContainer.style.display = 'block';
@@ -3310,5 +3298,6 @@
 
         })();
     </script>
+
 </body>
 </html>
