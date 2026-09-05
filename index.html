@@ -2411,6 +2411,39 @@
                 }, 1600);
                 if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
             }
+
+            function onComplete() {
+                // 先保存历史记录
+                if (state.totalDuration >= 60) {
+                    const entry = {
+                        taskName: state.taskName.trim() || '未命名任务',
+                        totalDuration: state.totalDuration,
+                        elapsed: state.totalDuration,
+                        feedbackMode: state.feedbackMode,
+                        mode: state.mode,
+                    };
+                    saveHistoryEntry(entry);
+                }
+
+                // 完成反馈（涟漪光晕）
+                triggerCelebrationBurst();
+
+                state.isCompleted = true;
+                state.isPaused = true;
+                state.elapsed = state.totalDuration;
+                state.startTimestamp = null;
+                if (updateTimer) { clearInterval(updateTimer);
+                    updateTimer = null; }
+
+                const x = 1;
+                const p = calculatePerceivedProgress(1);
+                renderAll(x, p);
+
+                dom.percentWrap.classList.add('fade-out');
+                updatePauseButton();
+                updatePauseVisual();
+                saveState();
+            }
             // ===== 添加任务 =====
             function openAddPanel() {
                 dom.addPanel.classList.add('open');
