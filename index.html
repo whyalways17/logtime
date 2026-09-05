@@ -689,6 +689,7 @@
             color: var(--text-muted);
         }
         .mode-selection {
+            margin-top: 14px;
             margin-bottom: 16px;
             padding: 12px 14px;
             background: var(--gray-light);
@@ -2327,14 +2328,13 @@
 
             // ===== 模式切换 =====
             function setMode(mode) {
-                if (mode === state.mode) return;
+                if (mode !== 'grid') mode = 'ring';
                 state.mode = mode;
 
                 if (mode === 'ring') {
                     dom.ringContainer.classList.remove('hidden');
                     dom.gridContainer.classList.remove('active');
                     dom.gridContainer.style.display = 'none';
-                    dom.percentTag.style.display = 'flex';
                     const x = state.totalDuration > 0 ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     const p = calculatePerceivedProgress(x);
                     drawRing(p);
@@ -2342,7 +2342,6 @@
                     dom.ringContainer.classList.add('hidden');
                     dom.gridContainer.style.display = 'block';
                     dom.gridContainer.classList.add('active');
-                    dom.percentTag.style.display = 'none';
                     const x = state.totalDuration > 0 ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     const p = calculatePerceivedProgress(x);
                     updateGrid(p);
@@ -2513,7 +2512,7 @@
                     dom.ringContainer.classList.remove('hidden');
                     dom.gridContainer.style.display = 'none';
                     dom.gridContainer.classList.remove('active');
-                    dom.percentTag.style.display = 'flex';
+                    dom.percentTag.style.display = 'none';
                     dom.percentWrap.classList.remove('fade-out');
                     dom.percentTag.classList.remove('completed-centered');
                 } else {
@@ -2984,7 +2983,7 @@
                             dom.ringContainer.classList.remove('hidden');
                             dom.gridContainer.style.display = 'none';
                             dom.gridContainer.classList.remove('active');
-                            dom.percentTag.style.display = 'flex';
+                            dom.percentTag.style.display = 'none';
                         }
 
                         if (!state.isPaused) {
