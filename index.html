@@ -5,38 +5,101 @@
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
     <link rel="manifest" href="./site.webmanifest">
-    <meta name="theme-color" content="#2265FC">
+    <meta name="theme-color" content="#007AFF">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>LogTime</title>
     <style>
-        /* ===== 全局重置 ===== */
+        /* ===== 设计令牌 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
-            --bg: #f7f6f2;
-            --bg-card: #faf9f6;
-            --text: #2d2d2d;
-            --text-light: #5a5a5a;
-            --text-muted: #b5b5b5;
-            --border: #e8e6e0;
-            --blue: #5a8a9e;
-            --blue-light: #7aaabc;
-            --blue-pale: #d9e6ed;
-            --gray: #d0cec8;
-            --gray-light: #eae8e2;
-            --radius: 4px;
-            --font: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+            --bg: #f5f5f7;
+            --bg-solid: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.72);
+            --bg-frost: rgba(255, 255, 255, 0.6);
+            --text: #1d1d1f;
+            --text-light: #6e6e73;
+            --text-muted: #86868b;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-strong: rgba(0, 0, 0, 0.16);
+            --blue: #007aff;
+            --blue-light: #3395ff;
+            --blue-deep: #0066d6;
+            --blue-pale: rgba(0, 122, 255, 0.10);
+            --gray: #d2d2d7;
+            --gray-light: rgba(0, 0, 0, 0.05);
+            --danger: #ff3b30;
+            --danger-pale: rgba(255, 59, 48, 0.08);
+            --success: #34c759;
+            --radius: 14px;
+            --radius-sm: 9px;
+            --radius-lg: 22px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 14px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.12);
+            --blur: blur(22px) saturate(180%);
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
             --ring-size: 220px;
-            --grid-gap: 2px;
+            --grid-gap: 3px;
             --grid-cols: 20;
             --grid-rows: 10;
+            --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+            color-scheme: light;
         }
-
+        :root[data-theme="dark"] {
+            --bg: #000000;
+            --bg-solid: #1c1c1e;
+            --bg-card: rgba(30, 30, 32, 0.72);
+            --bg-frost: rgba(28, 28, 30, 0.6);
+            --text: #f5f5f7;
+            --text-light: #a1a1a6;
+            --text-muted: #6e6e73;
+            --border: rgba(255, 255, 255, 0.12);
+            --border-strong: rgba(255, 255, 255, 0.22);
+            --blue: #0a84ff;
+            --blue-light: #409cff;
+            --blue-pale: rgba(10, 132, 255, 0.18);
+            --gray: #3a3a3c;
+            --gray-light: rgba(255, 255, 255, 0.09);
+            --danger: #ff453a;
+            --danger-pale: rgba(255, 69, 58, 0.16);
+            --success: #32d74b;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.55);
+            color-scheme: dark;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #000000;
+                --bg-solid: #1c1c1e;
+                --bg-card: rgba(30, 30, 32, 0.72);
+                --bg-frost: rgba(28, 28, 30, 0.6);
+                --text: #f5f5f7;
+                --text-light: #a1a1a6;
+                --text-muted: #6e6e73;
+                --border: rgba(255, 255, 255, 0.12);
+                --border-strong: rgba(255, 255, 255, 0.22);
+                --blue: #0a84ff;
+                --blue-light: #409cff;
+                --blue-pale: rgba(10, 132, 255, 0.18);
+                --gray: #3a3a3c;
+                --gray-light: rgba(255, 255, 255, 0.09);
+                --danger: #ff453a;
+                --danger-pale: rgba(255, 69, 58, 0.16);
+                --success: #32d74b;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.35);
+                --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.55);
+                color-scheme: dark;
+            }
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray) transparent;
+        }
         html,
         body {
             height: 100%;
@@ -47,85 +110,102 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            transition: background 0.4s ease, color 0.4s ease;
         }
-
+        body {
+            background:
+                radial-gradient(1200px 640px at 85% -8%, rgba(0, 122, 255, 0.07), transparent 60%),
+                radial-gradient(900px 560px at 8% 108%, rgba(88, 86, 214, 0.06), transparent 60%),
+                var(--bg);
+            background-attachment: fixed;
+        }
         ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 7px;
+            height: 7px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg);
+            background: transparent;
+            margin: 4px 0;
         }
         ::-webkit-scrollbar-thumb {
             background: var(--gray);
-            border-radius: 2px;
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background-clip: content-box;
         }
-
+        ::selection {
+            background: var(--blue-pale);
+        }
         .hidden {
             display: none !important;
         }
-
         .icon-button {
             background: none;
             border: none;
-            font-size: 1.2rem;
-            padding: 4px 6px;
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             color: var(--text-light);
-            border-radius: var(--radius);
-            transition: background 0.15s, color 0.15s;
+            border-radius: 999px;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease-out;
             line-height: 1;
+        }
+        .icon-button svg {
+            width: 22px;
+            height: 22px;
         }
         .icon-button:hover {
             background: var(--gray-light);
             color: var(--text);
         }
-
+        .icon-button:active {
+            transform: scale(0.88);
+        }
         #app {
             max-width: 560px;
             margin: 0 auto;
-            padding: 24px 20px 32px;
+            padding: 20px 20px 28px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
         }
-
         .top-bar {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
+            align-items: center;
+            padding: 10px 6px 14px;
             flex-shrink: 0;
-            min-height: 64px;
+            min-height: 60px;
             z-index: 10;
         }
-
         .task-info {
             flex: 1;
             min-width: 0;
             padding-right: 12px;
         }
-
         .task-name-wrap {
             position: relative;
             margin-bottom: 2px;
         }
-
         .task-name-display {
-            font-size: 1.15rem;
-            font-weight: 450;
+            font-size: 1.45rem;
+            font-weight: 650;
+            letter-spacing: -0.015em;
             color: var(--text);
             word-break: break-word;
-            padding: 4px 6px;
-            min-height: 2rem;
+            padding: 3px 8px;
+            min-height: 2.2rem;
             border: none;
             background: transparent;
             width: 100%;
             font-family: var(--font);
-            border-radius: 4px;
-            margin-left: -6px;
+            border-radius: 8px;
+            margin-left: -8px;
             cursor: text;
             user-select: text;
             -webkit-user-select: text;
@@ -133,100 +213,120 @@
             transition: background 0.15s;
         }
         .task-name-display:hover {
-            background: rgba(90, 138, 158, 0.08);
+            background: var(--gray-light);
         }
         .task-name-display.empty {
             color: var(--text-muted);
-            font-weight: 350;
+            font-weight: 500;
         }
-
         .task-name-input {
-            font-size: 1.15rem;
-            font-weight: 450;
+            font-size: 1.45rem;
+            font-weight: 650;
+            letter-spacing: -0.015em;
             color: var(--text);
-            padding: 4px 6px;
-            min-height: 2rem;
+            padding: 3px 8px;
+            min-height: 2.2rem;
             border: none;
-            background: rgba(90, 138, 158, 0.08);
+            background: var(--gray-light);
             width: 100%;
             font-family: var(--font);
-            border-radius: 4px;
-            margin-left: -6px;
+            border-radius: 8px;
+            margin-left: -8px;
             outline: 1px solid var(--blue-pale);
-            box-shadow: 0 0 0 2px rgba(90, 138, 158, 0.05);
+            box-shadow: 0 0 0 3px var(--blue-pale);
         }
         .task-name-input:focus {
-            outline: 1px solid var(--blue-light);
-            box-shadow: 0 0 0 3px rgba(90, 138, 158, 0.08);
+            outline: 1px solid var(--blue);
+            box-shadow: 0 0 0 4px var(--blue-pale);
         }
-
         .task-duration {
             font-size: 0.85rem;
             color: var(--text-light);
-            font-weight: 350;
-            letter-spacing: 0.02em;
-            padding-left: 6px;
+            font-weight: 450;
+            letter-spacing: 0.01em;
+            padding-left: 8px;
+            font-variant-numeric: tabular-nums;
             transition: opacity 0.4s ease;
         }
-
         .top-menu {
             flex-shrink: 0;
-            padding-top: 2px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
-        .top-menu .icon-button {
-            font-size: 1.4rem;
-            padding: 2px 6px;
+        .top-menu .icon-button svg {
+            width: 23px;
+            height: 23px;
         }
-        .top-menu .info-button {
-            font-size: 1.2rem;
-            padding: 2px 6px;
+        .auth-button {
             background: none;
             border: none;
-            cursor: pointer;
-            color: var(--text-light);
-            border-radius: var(--radius);
-            transition: background 0.15s, color 0.15s;
-            line-height: 1;
+            padding: 7px 12px;
             font-family: var(--font);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--blue);
+            cursor: pointer;
+            border-radius: 999px;
+            transition: background 0.15s ease;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .top-menu .info-button:hover {
-            background: var(--gray-light);
-            color: var(--text);
+        .auth-button:hover {
+            background: var(--blue-pale);
         }
-
         .main-visual {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 0 16px;
+            padding: 20px 0 12px;
             min-height: 360px;
             position: relative;
             transition: opacity 0.4s ease;
         }
-        .main-visual.paused-state {
-            opacity: 0.55;
-        }
-        .main-visual.paused-state .ring-container::after {
-            content: '⏸';
+        .main-visual::before {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
+            width: min(420px, 92%);
+            height: min(420px, 92%);
             transform: translate(-50%, -50%);
-            font-size: 2.4rem;
-            color: var(--text-light);
-            opacity: 0.5;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.10), transparent 70%);
+            border-radius: 50%;
+            filter: blur(10px);
             pointer-events: none;
-            z-index: 10;
+            transition: opacity 0.6s ease;
+        }
+        .main-visual.paused-state {
+            opacity: 0.72;
         }
         .main-visual.paused-state .grid-container {
             opacity: 0.55;
         }
-
+        .main-visual.paused-state .ring-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 92px;
+            height: 92px;
+            transform: translate(-50%, -50%);
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e8e93'%3E%3Crect x='6.5' y='5' width='4' height='14' rx='1.6'/%3E%3Crect x='13.5' y='5' width='4' height='14' rx='1.6'/%3E%3C/svg%3E") center/32% no-repeat,
+                var(--bg-frost);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+            pointer-events: none;
+            z-index: 10;
+        }
         .ring-container {
             position: relative;
             width: var(--ring-size);
@@ -237,9 +337,7 @@
             width: 100%;
             height: 100%;
             display: block;
-            border-radius: 50%;
         }
-
         .percent-wrap {
             position: absolute;
             top: 50%;
@@ -256,46 +354,45 @@
         .percent-wrap.fade-out {
             opacity: 0;
         }
-
         .percent-tag {
             position: absolute;
-            bottom: -4px;
-            right: -4px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            bottom: 2px;
+            right: 2px;
+            font-size: 0.78rem;
+            color: var(--text-light);
             font-variant-numeric: tabular-nums;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             pointer-events: none;
-            opacity: 0.5;
             display: flex;
             align-items: center;
             gap: 2px;
             user-select: none;
-            font-weight: 380;
+            font-weight: 550;
             z-index: 2;
-            transition: all 0.9s cubic-bezier(0.34, 1.2, 0.64, 1);
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--bg-frost);
+            border: 1px solid var(--border);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            box-shadow: var(--shadow-sm);
+            opacity: 0.9;
+            transition: all 0.9s var(--ease-spring);
         }
-        .percent-tag.completed-centered {
-            bottom: 50% !important;
-            right: 50% !important;
-            transform: translate(50%, 50%) !important;
-            font-size: clamp(2.6rem, 7vw, 4rem) !important;
-            color: var(--text) !important;
-            opacity: 0.92 !important;
-            font-weight: 450;
-            letter-spacing: 0.06em;
-            font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 30px rgba(90, 138, 158, 0.08);
-            padding: 0 12px;
-            border-radius: 8px;
-            line-height: 1.3;
-            width: auto;
-            height: auto;
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+        @keyframes pop {
+            0% {
+                transform: translate(50%, 50%) scale(0.55);
+                opacity: 0;
+            }
+            55% {
+                transform: translate(50%, 50%) scale(1.08);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(50%, 50%) scale(1);
+                opacity: 1;
+            }
         }
-
         .grid-container {
             display: none;
             width: 100%;
@@ -319,82 +416,105 @@
         }
         .grid-cell {
             background: var(--gray-light);
-            border-radius: 1px;
-            transition: background 0.25s ease;
+            border-radius: 2px;
+            transition: background 0.3s ease;
             aspect-ratio: 1 / 1;
         }
         .grid-cell.filled {
-            background: var(--blue);
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            box-shadow: 0 0 6px rgba(0, 122, 255, 0.28);
         }
         .grid-cell.filled.completed {
             background: var(--blue);
         }
-
         .empty-state {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 80px 0 0 0;
+            padding: 70px 0 0 0;
             color: var(--text-light);
             flex: 1;
             width: 100%;
         }
         .empty-state .add-trigger {
-            font-size: 2.8rem;
-            color: var(--text-muted);
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            background: var(--bg-frost);
+            border: 1px solid var(--border);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            box-shadow: var(--shadow-sm);
+            color: var(--blue);
             cursor: pointer;
-            transition: color 0.2s, transform 0.15s;
-            background: none;
-            border: none;
-            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s var(--ease-out), background 0.2s ease, box-shadow 0.2s ease;
             line-height: 1;
         }
+        .empty-state .add-trigger svg {
+            width: 34px;
+            height: 34px;
+        }
         .empty-state .add-trigger:hover {
-            color: var(--text);
+            background: var(--bg-solid);
+            box-shadow: var(--shadow-md);
             transform: scale(1.04);
+        }
+        .empty-state .add-trigger:active {
+            transform: scale(0.92);
         }
         .empty-state .empty-hint {
             font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 4px;
+            color: var(--text-light);
+            margin-top: 16px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
         }
         .empty-footer {
             margin-top: auto;
-            margin-bottom: -10px;
-            padding-top: 20px;
+            margin-bottom: -8px;
+            padding-top: 16px;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
-            letter-spacing: 0.06em;
-            opacity: 0.5;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
             user-select: none;
         }
-
         .bottom-controls {
             flex-shrink: 0;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
+            margin-top: auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
             gap: 8px 12px;
-            margin-top: auto;
+            flex-wrap: wrap;
+            padding: 13px 16px;
+            background: var(--bg-frost);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            box-shadow: var(--shadow-sm);
             z-index: 10;
             position: relative;
         }
-
         .real-time-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             font-size: 0.8rem;
             color: var(--text-light);
             cursor: pointer;
-            padding: 2px 4px;
-            border-radius: var(--radius);
-            transition: background 0.15s;
+            padding: 6px 10px;
+            border-radius: 999px;
             background: none;
             border: none;
             font-family: var(--font);
+            transition: background 0.15s ease, color 0.15s ease;
         }
         .real-time-toggle:hover {
             background: var(--gray-light);
@@ -402,26 +522,36 @@
         }
         .real-time-toggle .caret {
             display: inline-block;
-            transition: transform 0.2s;
-            font-size: 0.6rem;
-            margin-left: 2px;
+            width: 14px;
+            height: 14px;
+            color: var(--text-muted);
+            transition: transform 0.25s var(--ease-spring);
+        }
+        .real-time-toggle .toggle-icon {
+            color: var(--text-muted);
+            opacity: 0.85;
+            display: block;
+        }
+        .real-time-toggle .caret svg {
+            width: 14px;
+            height: 14px;
+            display: block;
         }
         .real-time-toggle .caret.open {
             transform: rotate(180deg);
         }
-
         .real-time-display {
             font-size: 0.75rem;
             color: var(--text-muted);
             font-variant-numeric: tabular-nums;
-            padding: 2px 0 2px 8px;
+            padding: 2px 0 2px 6px;
             opacity: 0;
             transition: opacity 0.25s, max-height 0.25s;
             max-height: 0;
             overflow: hidden;
             width: 100%;
             text-align: right;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
         }
         .real-time-display.visible {
             opacity: 1;
@@ -432,49 +562,54 @@
         }
         .real-time-display .value {
             color: var(--text-light);
-            font-weight: 400;
+            font-weight: 500;
         }
-
         .pause-btn {
-            background: none;
+            background: var(--bg-solid);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 6px 18px;
-            font-size: 0.85rem;
-            color: var(--text-light);
+            border-radius: 999px;
+            padding: 10px 26px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text);
             cursor: pointer;
             font-family: var(--font);
-            transition: background 0.15s, border-color 0.15s, color 0.15s;
-            letter-spacing: 0.04em;
-            min-width: 64px;
+            transition: transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            min-width: 88px;
             text-align: center;
+            box-shadow: var(--shadow-sm);
         }
         .pause-btn:hover {
-            background: var(--gray-light);
-            border-color: var(--gray);
-            color: var(--text);
+            background: var(--bg-solid);
         }
         .pause-btn:active {
-            background: var(--border);
+            transform: scale(0.96);
         }
         .pause-btn.running {
-            color: var(--text);
-            border-color: var(--gray);
+            color: var(--blue);
+            border-color: rgba(0, 122, 255, 0.25);
+            background: var(--blue-pale);
         }
         .pause-btn.paused {
-            color: var(--text-light);
-            border-color: var(--border);
+            color: #fff;
+            background: var(--blue);
+            border-color: var(--blue);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
+        }
+        .pause-btn.paused:hover {
+            background: var(--blue-light);
+            border-color: var(--blue-light);
         }
         .pause-btn.reset-btn {
-            color: var(--text-muted);
-            border-color: var(--border);
+            color: var(--danger);
+            border-color: transparent;
+            background: var(--danger-pale);
+            box-shadow: none;
         }
         .pause-btn.reset-btn:hover {
-            color: #c0392b;
-            border-color: #c0392b;
-            background: rgba(192, 57, 43, 0.04);
+            background: var(--danger-pale);
         }
-
         .bottom-left {
             display: flex;
             align-items: center;
@@ -486,81 +621,78 @@
             align-items: center;
             gap: 6px;
         }
-
         .add-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px 20px 18px;
-            margin-bottom: 20px;
+            border-radius: var(--radius-lg);
+            padding: 22px 22px 20px;
+            margin-bottom: 18px;
             flex-shrink: 0;
             display: none;
-            animation: fadeSlide 0.25s ease;
+            animation: fadeSlide 0.35s var(--ease-spring);
             z-index: 20;
             position: relative;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            box-shadow: var(--shadow-md);
         }
         .add-panel.open {
             display: block;
         }
-
         @keyframes fadeSlide {
             0% {
                 opacity: 0;
-                transform: translateY(-6px);
+                transform: translateY(-8px);
             }
             100% {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         .add-panel .panel-title {
-            font-size: 0.9rem;
-            font-weight: 450;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             color: var(--text);
-            margin-bottom: 14px;
-            letter-spacing: 0.02em;
+            margin-bottom: 16px;
         }
-
         .add-field {
             margin-bottom: 14px;
         }
         .add-field label {
             display: block;
             font-size: 0.78rem;
+            font-weight: 500;
             color: var(--text-light);
-            margin-bottom: 4px;
-            letter-spacing: 0.03em;
+            margin-bottom: 6px;
+            letter-spacing: 0.01em;
         }
         .add-field input,
         .add-field select {
             width: 100%;
-            padding: 8px 10px;
+            padding: 11px 14px;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
+            border-radius: 12px;
+            background: var(--bg-solid);
             font-size: 0.95rem;
             font-family: var(--font);
             color: var(--text);
-            transition: border-color 0.15s, background 0.15s;
+            transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
             outline: none;
         }
         .add-field input:focus,
         .add-field select:focus {
-            border-color: var(--blue-light);
-            background: #ffffff;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--blue-pale);
         }
         .add-field input::placeholder {
             color: var(--text-muted);
         }
-
-        /* ===== 模式选择：启程 / 抵达 / Linear ===== */
         .mode-selection {
             margin-bottom: 16px;
-            padding: 10px 12px;
-            background: var(--bg);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
+            padding: 12px 14px;
+            background: var(--gray-light);
+            border-radius: 14px;
             transition: opacity 0.3s ease, pointer-events 0.3s ease;
         }
         .mode-selection.disabled {
@@ -568,34 +700,36 @@
             pointer-events: none;
         }
         .mode-selection .mode-label {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
+            font-weight: 500;
             color: var(--text-light);
-            letter-spacing: 0.03em;
-            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+            margin-bottom: 8px;
         }
         .mode-option {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 2px 0;
-            font-size: 0.85rem;
+            gap: 10px;
+            padding: 5px 0;
+            font-size: 0.88rem;
             color: var(--text);
             cursor: pointer;
         }
         .mode-option input[type="radio"] {
             margin: 0;
             accent-color: var(--blue);
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
         }
         .mode-option .mode-name {
-            font-weight: 430;
-            letter-spacing: 0.02em;
+            font-weight: 500;
+            letter-spacing: 0.01em;
             color: var(--text);
         }
         .mode-option .mode-name.depart {
             color: var(--blue);
         }
-
         .add-row {
             display: flex;
             gap: 10px;
@@ -611,23 +745,26 @@
         .add-row .add-field:last-child {
             flex: 1;
         }
-
         .add-actions {
             display: flex;
             gap: 10px;
-            margin-top: 16px;
+            margin-top: 18px;
             justify-content: flex-end;
         }
         .add-actions .btn {
-            padding: 8px 20px;
+            padding: 10px 22px;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
-            font-size: 0.85rem;
+            border-radius: 999px;
+            background: var(--bg-solid);
+            font-size: 0.88rem;
+            font-weight: 500;
             font-family: var(--font);
             cursor: pointer;
-            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            transition: transform 0.1s ease-out, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
             color: var(--text-light);
+        }
+        .add-actions .btn:active {
+            transform: scale(0.96);
         }
         .add-actions .btn:hover {
             background: var(--gray-light);
@@ -638,89 +775,122 @@
             background: var(--blue);
             border-color: var(--blue);
             color: #fff;
+            box-shadow: 0 6px 18px rgba(0, 122, 255, 0.3);
         }
         .add-actions .btn-primary:hover {
             background: var(--blue-light);
             border-color: var(--blue-light);
             color: #fff;
         }
-        .add-actions .btn-primary:active {
-            background: #4a7a8e;
-        }
-
         .menu-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.18);
             z-index: 100;
             display: none;
             align-items: flex-start;
             justify-content: flex-end;
-            padding: 20px 16px;
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            padding: 14px 14px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
         .menu-overlay.open {
             display: flex;
         }
-
         .menu-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px 18px 18px;
-            min-width: 180px;
+            border-radius: 20px;
+            padding: 16px 16px 14px;
+            min-width: 212px;
             max-width: 260px;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.03);
-            animation: fadeSlide 0.2s ease;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            animation: menuIn 0.3s var(--ease-spring);
+            transform-origin: top right;
+        }
+        @keyframes menuIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(-6px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         .menu-panel .menu-close {
             float: right;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: none;
             border: none;
-            font-size: 1.2rem;
             color: var(--text-muted);
             cursor: pointer;
-            padding: 0 2px;
+            border-radius: 999px;
             line-height: 1;
         }
         .menu-panel .menu-close:hover {
+            background: var(--gray-light);
             color: var(--text);
         }
-
+        .menu-panel .menu-close svg {
+            width: 16px;
+            height: 16px;
+        }
         .menu-section {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .menu-section:last-child {
             margin-bottom: 0;
         }
         .menu-section .menu-label {
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 450;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
         .menu-option {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 4px 0;
+            gap: 10px;
+            padding: 7px 8px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
+            font-weight: 450;
             color: var(--text-light);
-            transition: color 0.15s;
+            border-radius: 10px;
+            transition: background 0.15s ease, color 0.15s ease;
         }
         .menu-option:hover {
+            background: var(--gray-light);
             color: var(--text);
+        }
+        .menu-option .menu-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+        }
+        .menu-option .menu-icon svg {
+            width: 19px;
+            height: 19px;
         }
         .menu-option .radio {
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            border: 2px solid var(--border);
+            border: 2px solid var(--border-strong);
             position: relative;
             flex-shrink: 0;
             transition: border-color 0.15s;
@@ -733,157 +903,222 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--blue);
         }
-
         .menu-about {
-            margin-top: 12px;
-            padding-top: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid var(--border);
         }
         .menu-about .menu-option {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-light);
         }
         .menu-about .menu-option.danger {
-            color: #c0392b;
+            color: var(--danger);
         }
         .menu-about .menu-option.danger:hover {
-            color: #a93226;
+            background: var(--danger-pale);
+            color: var(--danger);
         }
-
-        /* ===== 简洁版合并弹窗 ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.25);
             z-index: 200;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .modal-overlay.open {
             display: flex;
         }
-
         .modal-content {
-            background: #fcfbf9;
-            border: 1px solid rgba(232, 230, 224, 0.5);
-            border-radius: 14px;
-            padding: 32px 28px 28px;
-            max-width: 400px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px 28px 26px;
+            max-width: 420px;
             width: 100%;
-            max-height: 80vh;
+            max-height: 82vh;
             overflow-y: auto;
-            animation: fadeSlide 0.3s ease;
-            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.04);
+            animation: modalIn 0.4s var(--ease-spring);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray) transparent;
         }
-
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 12px 0;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--gray);
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        @keyframes modalIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.94) translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
         .modal-title {
-            font-size: 1.15rem;
-            font-weight: 430;
+            font-size: 1.35rem;
+            font-weight: 650;
+            letter-spacing: -0.015em;
             color: var(--text);
-            letter-spacing: -0.01em;
-            margin-bottom: 10px;
-            line-height: 1.3;
+            margin-bottom: 8px;
+            line-height: 1.25;
         }
-
         .modal-sub {
             font-size: 0.92rem;
             color: var(--text-light);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
-
-        /* ---- 模式卡片 ---- */
+        .about-hero {
+            text-align: center;
+            padding: 2px 0 6px;
+        }
+        .about-hero .modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 3px;
+        }
+        .about-hero .modal-sub {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            letter-spacing: 0.04em;
+        }
         .mode-cards {
             display: flex;
             flex-direction: column;
             gap: 10px;
             margin-bottom: 0px;
         }
-
         .mode-card {
-            background: var(--bg);
+            background: var(--bg-solid);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 16px 14px;
-            transition: background 0.15s;
+            border-radius: 16px;
+            padding: 12px 14px 14px;
+            transition: border-color 0.15s ease, transform 0.18s var(--ease-out);
         }
         .mode-card:hover {
-            background: rgba(90, 138, 158, 0.02);
+            border-color: var(--border-strong);
+            transform: translateY(-1px);
         }
-
         .mode-card-header {
-            font-size: 0.82rem;
-            font-weight: 430;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             color: var(--text);
-            letter-spacing: 0.02em;
-            margin-bottom: 2px;
+            margin-bottom: 9px;
+        }
+        .mode-card-header .mode-name {
+            margin-left: 2px;
         }
         .mode-card-header .mode-badge {
-            font-weight: 380;
-            color: var(--text-light);
-            margin-right: 2px;
+            font-size: 0.66rem;
+            font-weight: 650;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            background: var(--gray-light);
+            padding: 2px 9px;
+            border-radius: 999px;
         }
         .mode-card-header .mode-badge.depart-badge {
             color: var(--blue);
+            background: var(--blue-pale);
         }
-
         .mode-card-formula {
-            font-family: "Times New Roman", "STIX", "Georgia", serif;
-            font-style: italic;
-            font-size: 1.05rem;
-            color: var(--text);
-            letter-spacing: 0.03em;
-            padding: 2px 0;
-            text-align: left;
+            font-family: "SF Mono", ui-monospace, "Cascadia Code", Consolas, "Segoe UI", monospace;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--blue);
+            text-align: center;
+            letter-spacing: 0.01em;
+            line-height: 1.8;
+            padding: 6px 0 2px;
         }
-
+        .mode-card-formula .frac {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 4px;
+            line-height: 1.2;
+        }
+        .mode-card-formula .frac-n {
+            font-size: 0.8em;
+            padding: 0 7px 3px;
+            border-bottom: 1px solid currentColor;
+        }
+        .mode-card-formula .frac-d {
+            font-size: 0.8em;
+            padding: 3px 7px 0;
+        }
+        .mode-card-formula sup {
+            font-size: 0.75em;
+            color: var(--blue);
+        }
         .modal-version {
             text-align: right;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
             letter-spacing: 0.04em;
-            opacity: 0.35;
-            margin-top: 14px;
+            opacity: 0.5;
+            margin-top: 16px;
             user-select: none;
         }
-
         .modal-close {
-            margin-top: 16px;
+            margin-top: 18px;
             text-align: right;
         }
         .modal-close button {
             background: none;
             border: none;
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--blue);
             cursor: pointer;
             font-family: var(--font);
-            transition: color 0.15s;
-            letter-spacing: 0.04em;
+            transition: background 0.15s ease;
+            letter-spacing: 0.02em;
         }
         .modal-close button:hover {
-            color: var(--text);
+            background: var(--blue-pale);
         }
-
-        /* ===== 历史记录弹窗 ===== */
         .history-modal .modal-content {
-            max-width: 440px;
+            max-width: 460px;
         }
         .history-modal .modal-title {
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .history-modal .modal-sub {
-            margin-bottom: 14px;
-            font-size: 0.75rem;
+            margin-bottom: 12px;
+            font-size: 0.78rem;
             color: var(--text-muted);
             letter-spacing: 0.02em;
         }
@@ -891,16 +1126,24 @@
             max-height: 340px;
             overflow-y: auto;
             margin-bottom: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray) transparent;
         }
         .history-list::-webkit-scrollbar {
-            width: 3px;
+            width: 6px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 6px 0;
         }
         .history-list::-webkit-scrollbar-thumb {
             background: var(--gray);
-            border-radius: 2px;
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background-clip: content-box;
         }
         .history-item {
-            padding: 10px 0;
+            padding: 12px 4px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -915,9 +1158,10 @@
             min-width: 0;
         }
         .history-item .h-name {
-            font-size: 0.92rem;
+            font-size: 0.95rem;
+            font-weight: 550;
+            letter-spacing: -0.01em;
             color: var(--text);
-            font-weight: 430;
             word-break: break-word;
         }
         .history-item .h-time {
@@ -926,84 +1170,123 @@
             margin-top: 1px;
         }
         .history-item .h-duration {
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             color: var(--text-light);
-            margin-top: 3px;
+            margin-top: 4px;
             letter-spacing: 0.01em;
+            font-variant-numeric: tabular-nums;
         }
         .history-item .h-del {
             flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: none;
             border: none;
             font-size: 0.9rem;
             color: var(--text-muted);
             cursor: pointer;
-            padding: 4px 6px;
-            border-radius: var(--radius);
-            transition: background 0.15s, color 0.15s;
+            border-radius: 999px;
+            transition: background 0.15s ease, color 0.15s ease;
             line-height: 1;
         }
         .history-item .h-del:hover {
-            background: rgba(192, 57, 43, 0.06);
-            color: #c0392b;
+            background: var(--danger-pale);
+            color: var(--danger);
         }
         .history-empty {
-            padding: 28px 0;
+            padding: 30px 0;
             text-align: center;
             color: var(--text-muted);
             font-size: 0.85rem;
         }
-
-        /* ===== 完成提示 ===== */
         .save-toast {
             position: fixed;
-            bottom: 80px;
-            right: 20px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            bottom: 90px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-light);
             opacity: 0;
-            transition: opacity 0.6s ease, transform 0.4s ease;
             transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s var(--ease-spring);
             pointer-events: none;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             background: var(--bg-card);
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 10px 16px;
+            border-radius: 999px;
             border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
             z-index: 300;
         }
+        .save-toast svg {
+            width: 15px;
+            height: 15px;
+            color: var(--success);
+        }
         .save-toast.visible {
-            opacity: 0.6;
+            opacity: 1;
             transform: translateY(0);
         }
-
-        .burst-emoji {
+        /* ===== 完成庆祝（苹果风，克制而优雅） ===== */
+        .completion-glow {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            margin: -60px 0 0 -60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.35), transparent 70%);
             pointer-events: none;
-            z-index: 50;
-            font-weight: 400;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            animation: burstAndSettle 1.8s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
-            user-select: none;
-            will-change: transform, opacity;
+            z-index: 55;
+            animation: glowPulse 1.4s var(--ease-out) forwards;
         }
-
-        @keyframes burstAndSettle {
+        @keyframes glowPulse {
             0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1) rotate(0deg);
-            }
-            35% {
-                opacity: 0.95;
-                transform: translate(calc(var(--tx) * 0.3), calc(var(--ty) * 0.3)) scale(0.9) rotate(180deg);
+                transform: scale(0.4);
+                opacity: 0.9;
             }
             100% {
-                opacity: var(--final-opacity, 0.45);
-                transform: translate(var(--tx), var(--ty)) scale(var(--final-scale, 0.35)) rotate(720deg);
+                transform: scale(2.4);
+                opacity: 0;
             }
         }
-
+        .completion-ripple {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 28px;
+            height: 28px;
+            margin: -14px 0 0 -14px;
+            border-radius: 50%;
+            border: 2px solid var(--blue);
+            pointer-events: none;
+            z-index: 60;
+            animation: ripple 1.2s var(--ease-out) forwards;
+        }
+        .completion-ripple.delay {
+            animation-delay: 0.18s;
+            opacity: 0;
+            border-color: var(--blue-light);
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0.3);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(16);
+                opacity: 0;
+            }
+        }
         .capture-mode .grid-cell {
             transition: none !important;
         }
@@ -1020,96 +1303,128 @@
             opacity: 0.92 !important;
         }
         .capture-mode .percent-tag.completed-centered {
-            opacity: 0.92 !important;
+            opacity: 1 !important;
             background: transparent;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
+            box-shadow: none;
+            border-color: transparent;
         }
-
-        /* ===== 云端账户 ===== */
-        .auth-button {
-            background: none;
-            border: none;
-            padding: 2px 6px;
-            font-family: var(--font);
-            font-size: 0.78rem;
-            color: var(--text-light);
-            cursor: pointer;
-            border-radius: var(--radius);
-            transition: background 0.15s, color 0.15s;
-            max-width: 130px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .auth-button:hover { background: var(--gray-light); color: var(--text); }
         .auth-status {
-            font-size: 0.68rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
-            margin-top: 5px;
+            margin-top: 8px;
             min-height: 1em;
             line-height: 1.4;
         }
-        .auth-error { color: #a94442; }
-        .auth-success { color: var(--blue); }
-        .auth-form { display: flex; flex-direction: column; gap: 12px; }
+        .auth-error {
+            color: var(--danger);
+        }
+        .auth-success {
+            color: var(--success);
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
         .auth-form input {
-            width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-            border-radius: 7px; background: var(--bg); color: var(--text);
-            font-family: var(--font); font-size: 0.92rem; outline: none;
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-solid);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
-        .auth-form input:focus { border-color: var(--blue-light); background: #fff; }
+        .auth-form input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--blue-pale);
+        }
         .auth-submit {
-            width: 100%; padding: 9px 14px; border: 1px solid var(--blue);
-            border-radius: 7px; background: var(--blue); color: #fff;
-            font-family: var(--font); font-size: 0.86rem; cursor: pointer;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--blue);
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
+            font-family: var(--font);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease-out;
         }
-        .auth-submit:hover { background: var(--blue-light); border-color: var(--blue-light); }
+        .auth-submit:active {
+            transform: scale(0.98);
+        }
+        .auth-submit:hover {
+            background: var(--blue-light);
+            border-color: var(--blue-light);
+        }
         .auth-switch {
-            background: none; border: none; color: var(--text-muted); cursor: pointer;
-            font-family: var(--font); font-size: 0.76rem; padding: 3px; text-align: center;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            padding: 4px;
+            text-align: center;
         }
-        .auth-switch:hover { color: var(--text); }
+        .auth-switch:hover {
+            color: var(--text);
+        }
         .auth-account {
-            padding: 10px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 12px;
+            padding: 12px 0 6px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 12px;
         }
-        .auth-account-email { font-size: 0.82rem; color: var(--text); word-break: break-all; }
-        .auth-account-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
-
+        .auth-account-email {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+            word-break: break-all;
+        }
+        .auth-account-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
         @media (max-width: 480px) {
             #app {
                 padding: 16px 14px 24px;
             }
             :root {
                 --ring-size: 180px;
-                --grid-gap: 1.5px;
+                --grid-gap: 2px;
             }
             .task-name-display,
             .task-name-input {
-                font-size: 1rem;
-                padding: 2px 4px;
-                margin-left: -4px;
+                font-size: 1.2rem;
+                padding: 2px 6px;
+                margin-left: -6px;
             }
             .task-duration {
-                font-size: 0.75rem;
-                padding-left: 4px;
+                font-size: 0.78rem;
+                padding-left: 6px;
             }
             .percent-tag {
-                font-size: 0.6rem;
-                bottom: -2px;
-                right: -2px;
-                opacity: 0.45;
+                font-size: 0.7rem;
+                padding: 5px 8px;
             }
             .percent-tag.completed-centered {
-                font-size: clamp(2rem, 6vw, 2.6rem) !important;
-                padding: 0 8px;
+                font-size: clamp(2.2rem, 7vw, 3rem) !important;
+                padding: 0 12px;
             }
             .main-visual {
-                padding: 16px 0 10px;
+                padding: 14px 0 10px;
                 min-height: 280px;
             }
             .add-panel {
-                padding: 16px 14px;
+                padding: 18px 16px;
             }
             .add-row {
                 flex-direction: column;
@@ -1120,33 +1435,35 @@
                 width: 100%;
             }
             .bottom-controls {
-                padding-top: 12px;
+                padding: 10px 12px;
                 gap: 6px 10px;
+                border-radius: 18px;
             }
             .pause-btn {
-                padding: 5px 14px;
-                font-size: 0.8rem;
-                min-width: 56px;
+                padding: 9px 20px;
+                font-size: 0.85rem;
+                min-width: 80px;
             }
             .menu-panel {
-                min-width: 140px;
-                padding: 16px 14px;
+                min-width: 190px;
+                padding: 14px 14px 12px;
             }
             .modal-content {
                 padding: 24px 20px 20px;
                 margin: 10px;
+                border-radius: 20px;
             }
             .modal-title {
-                font-size: 1.05rem;
+                font-size: 1.2rem;
             }
             .modal-sub {
                 font-size: 0.85rem;
             }
             .mode-card-formula {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
             }
             .mode-card {
-                padding: 10px 14px 12px;
+                padding: 12px 14px 13px;
             }
             .grid-container {
                 max-width: 320px;
@@ -1155,49 +1472,46 @@
                 font-size: 0.7rem;
             }
             .empty-footer {
-                font-size: 0.6rem;
+                font-size: 0.65rem;
                 padding-top: 12px;
             }
-            .top-menu .info-button {
-                font-size: 1rem;
+            .top-menu .icon-button svg {
+                width: 21px;
+                height: 21px;
             }
             .history-item {
-                padding: 8px 0;
+                padding: 9px 4px;
             }
             .history-item .h-name {
-                font-size: 0.85rem;
+                font-size: 0.88rem;
             }
             .history-item .h-time {
-                font-size: 0.6rem;
+                font-size: 0.65rem;
             }
             .history-item .h-duration {
-                font-size: 0.58rem;
+                font-size: 0.65rem;
             }
             .history-item .h-del {
                 font-size: 0.8rem;
             }
             .save-toast {
-                bottom: 70px;
-                right: 14px;
-                font-size: 0.6rem;
-                padding: 4px 12px;
+                bottom: 76px;
+                right: 16px;
+                font-size: 0.72rem;
+                padding: 8px 14px;
             }
         }
-
         @media (max-width: 380px) {
             :root {
                 --ring-size: 150px;
-                --grid-gap: 1px;
-            }
-            .percent-tag {
-                font-size: 0.55rem;
+                --grid-gap: 1.5px;
             }
             .percent-tag.completed-centered {
-                font-size: clamp(1.6rem, 5vw, 2.2rem) !important;
+                font-size: clamp(1.8rem, 6vw, 2.4rem) !important;
             }
             .task-name-display,
             .task-name-input {
-                font-size: 0.9rem;
+                font-size: 1.05rem;
             }
             .grid-container {
                 max-width: 260px;
@@ -1206,38 +1520,33 @@
                 padding: 12px 10px 18px;
             }
             .empty-footer {
-                font-size: 0.55rem;
+                font-size: 0.6rem;
                 padding-top: 8px;
-            }
-            .top-menu .info-button {
-                font-size: 0.9rem;
             }
             .mode-card-formula {
                 font-size: 0.85rem;
             }
         }
-
         @media (min-width: 600px) {
             :root {
                 --ring-size: 260px;
             }
             .task-name-display,
             .task-name-input {
-                font-size: 1.3rem;
+                font-size: 1.55rem;
             }
             .grid-container {
                 max-width: 480px;
             }
             .percent-tag {
-                font-size: 0.75rem;
-                bottom: -2px;
-                right: -2px;
+                font-size: 0.8rem;
+                bottom: 4px;
+                right: 4px;
             }
             .percent-tag.completed-centered {
-                font-size: clamp(2.8rem, 5vw, 3.6rem) !important;
+                font-size: clamp(3rem, 5.5vw, 4rem) !important;
             }
         }
-
         @media (min-width: 900px) {
             :root {
                 --ring-size: 300px;
@@ -1248,20 +1557,44 @@
             }
             .task-name-display,
             .task-name-input {
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
             .grid-container {
                 max-width: 540px;
             }
             .percent-tag {
-                font-size: 0.8rem;
-                bottom: 0;
-                right: 0;
+                font-size: 0.85rem;
+                bottom: 6px;
+                right: 6px;
             }
             .percent-tag.completed-centered {
-                font-size: clamp(3.2rem, 4.5vw, 4.8rem) !important;
+                font-size: clamp(3.4rem, 5vw, 4.8rem) !important;
             }
         }
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        @media (prefers-reduced-transparency: reduce) {
+            .bottom-controls,
+            .add-panel,
+            .menu-panel,
+            .modal-content,
+            .save-toast,
+            .percent-tag,
+            .empty-state .add-trigger,
+            .main-visual.paused-state .ring-container::after {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: var(--bg-solid) !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -1275,9 +1608,13 @@
                 <div id="taskDurationDisplay" class="task-duration">—</div>
             </div>
             <div class="top-menu">
-                <button class="info-button" id="infoBtn" aria-label="关于 LogTime">ⓘ</button>
+                <button class="icon-button" id="infoBtn" aria-label="关于 LogTime">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+                </button>
                 <button class="auth-button" id="authBtn" aria-label="账户">登录</button>
-                <button class="icon-button" id="menuBtn" aria-label="菜单">☰</button>
+                <button class="icon-button" id="menuBtn" aria-label="菜单">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6.5" x2="20" y2="6.5"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17.5" x2="20" y2="17.5"/></svg>
+                </button>
             </div>
         </header>
 
@@ -1316,7 +1653,7 @@
                 </label>
                 <label class="mode-option">
                     <input type="radio" name="mode" value="C" />
-                    <span class="mode-name">Linear</span>
+                    <span class="mode-name">恒行</span>
                 </label>
             </div>
 
@@ -1328,7 +1665,9 @@
 
         <div class="main-visual" id="mainVisual">
             <div id="emptyState" class="empty-state">
-                <button class="add-trigger" id="emptyAddBtn">+</button>
+                <button class="add-trigger" id="emptyAddBtn" aria-label="添加任务">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
                 <span class="empty-hint">添加任务</span>
                 <div class="empty-footer">随时可以开始</div>
             </div>
@@ -1337,7 +1676,7 @@
                 <canvas id="ringCanvas" width="400" height="400"></canvas>
                 <div class="percent-wrap" id="percentWrap"></div>
                 <div class="percent-tag" id="percentTag">
-                    <span id="percentText">0.0%</span>
+                    <span id="percentText"></span>
                 </div>
             </div>
 
@@ -1349,11 +1688,10 @@
         <div class="bottom-controls">
             <div class="bottom-left">
                 <button class="real-time-toggle" id="realTimeToggle">
-                    实际 <span class="caret" id="caretIcon">›</span>
+                    <svg class="toggle-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 1 9 9h-9z"></path></svg><span class="caret" id="caretIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                 </button>
                 <div id="realTimeDisplay" class="real-time-display">
-                    <span class="label">实际 · </span>
-                    <span class="value" id="realTimeValue">0.0%</span>
+                    <span class="value" id="realTimeValue"></span>
                 </div>
             </div>
             <div class="bottom-right">
@@ -1364,7 +1702,9 @@
 
     <div class="menu-overlay" id="menuOverlay">
         <div class="menu-panel">
-            <button class="menu-close" id="menuClose">✕</button>
+            <button class="menu-close" id="menuClose" aria-label="关闭">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                </button>
             <div class="menu-section">
                 <div class="menu-label">显示方式</div>
                 <div class="menu-option" data-mode="ring">
@@ -1374,16 +1714,21 @@
                     <span class="radio" id="modeGridRadio"></span> 方格
                 </div>
             </div>
+            <div class="menu-section">
+                    <div class="menu-label">外观</div>
+                    <div class="menu-option appearance-option" data-appearance="light"><span class="radio" id="appearanceLightRadio"></span> 浅色</div>
+                    <div class="menu-option appearance-option" data-appearance="dark"><span class="radio" id="appearanceDarkRadio"></span> 深色</div>
+                </div>
             <div class="menu-about">
                 <div class="menu-option" id="captureMenuBtn" style="margin-top:4px;">
-                    <span style="font-size:0.9rem;">🖼</span> 生成图片
-                </div>
+                        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="M4 17l4.5-4.5 3 3 3.5-3.5L20 17"/></svg></span> 生成图片
+                    </div>
                 <div class="menu-option" id="historyMenuBtn" style="margin-top:4px;">
-                    <span style="font-size:0.9rem;">📋</span> 历史记录
-                </div>
-                <div class="menu-option danger" id="resetTaskBtn" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:#c0392b;">
-                    <span style="font-size:0.9rem;">⟳</span> 重置任务
-                </div>
+                        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span> 历史记录
+                    </div>
+                <div class="menu-option danger" id="resetTaskBtn" style="margin-top:8px;padding-top:9px;border-top:1px solid var(--border);">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 3.5v5h5"/></svg></span> 重置任务
+                    </div>
             </div>
         </div>
     </div>
@@ -1391,42 +1736,38 @@
     <!-- ===== 简洁版合并弹窗 ===== -->
     <div class="modal-overlay" id="infoModal">
         <div class="modal-content">
-            <div class="modal-title">关于 LogTime</div>
-            <div class="modal-sub">提供三种计时模型</div>
+            <div class="about-hero">
+                <div class="modal-title">LogTime</div>
+                <div class="modal-sub">三种计时方式</div>
+            </div>
 
             <div class="mode-cards">
-                <!-- 启程 -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge depart-badge">A</span> · 启程
+                        <span class="mode-name">启程</span>
+                        <span class="mode-badge depart-badge">A</span>
                     </div>
-                    <div class="mode-card-formula">
-                        P<sub>A</sub>(x) = ln(1 + 2x) / ln&thinsp;3
-                    </div>
+                    <div class="mode-card-formula">P(x) = <span class="frac"><span class="frac-n">ln(1 + 2x)</span><span class="frac-d">ln 3</span></span></div>
                 </div>
 
-                <!-- 抵达 -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge">B</span> · 抵达
+                        <span class="mode-name">抵达</span>
+                        <span class="mode-badge">B</span>
                     </div>
-                    <div class="mode-card-formula">
-                        P<sub>B</sub>(x) = x²
-                    </div>
+                    <div class="mode-card-formula">P(x) = x<sup>2</sup></div>
                 </div>
 
-                <!-- Linear -->
                 <div class="mode-card">
                     <div class="mode-card-header">
-                        <span class="mode-badge">C</span> · Linear
+                        <span class="mode-name">恒行</span>
+                        <span class="mode-badge">C</span>
                     </div>
-                    <div class="mode-card-formula">
-                        P<sub>C</sub>(x) = x
-                    </div>
+                    <div class="mode-card-formula">P(x) = x</div>
                 </div>
             </div>
 
-            <div class="modal-version">v.1.2.0</div>
+            <div class="modal-version">v.1.3.0</div>
 
             <div class="modal-close">
                 <button id="infoCloseBtn">关闭</button>
@@ -1474,7 +1815,7 @@
     </div>
 
     <!-- ===== 完成提示（右下角） ===== -->
-    <div id="saveToast" class="save-toast">✓ 记录已保存</div>
+    <div id="saveToast" class="save-toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>已保存</div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
@@ -1491,6 +1832,7 @@
                 UPDATE_INTERVAL: 80,
                 STORAGE_KEY: 'time_app_state_v1',
                 HISTORY_KEY: 'logtime_history_v1',
+                APPEARANCE_KEY: 'logtime_appearance_v1',
                 SUPABASE_URL: 'https://sewtmqnaerfklfhfqtzq.supabase.co',
                 SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_63J5MUv_6VXmjwPw6QHPSg_vICgbfmS',
             };
@@ -1539,6 +1881,10 @@
                 return Math.log(1 + a * x) / Math.log(1 + a);
             }
 
+            // ===== 主题变量读取 =====
+            function cssVar(name) {
+                return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            }
             // ===== DOM 引用 =====
             const $ = id => document.getElementById(id);
             const dom = {
@@ -1574,6 +1920,7 @@
                 historyMenuBtn: $('historyMenuBtn'),
                 resetTaskBtn: $('resetTaskBtn'),
                 mainVisual: $('mainVisual'),
+                bottomControls: document.querySelector('.bottom-controls'),
                 modeRingRadio: $('modeRingRadio'),
                 modeGridRadio: $('modeGridRadio'),
                 modeSelection: $('modeSelection'),
@@ -1603,6 +1950,28 @@
                 authGuestCloseBtn: $('authGuestCloseBtn'),
             };
 
+            // ===== 外观（浅色 / 深色，默认跟随系统） =====
+            const appearanceOptions = document.querySelectorAll('.appearance-option');
+            function applyAppearance(pref) {
+                pref = pref || 'system';
+                if (pref === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else if (pref === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                }
+                try { localStorage.setItem(CONFIG.APPEARANCE_KEY, pref); } catch (e) {}
+                appearanceOptions.forEach(function(el) {
+                    el.querySelector('.radio').classList.toggle('active', el.dataset.appearance === pref);
+                });
+            }
+            function loadAppearance() {
+                let pref = 'system';
+                try { pref = localStorage.getItem(CONFIG.APPEARANCE_KEY) || 'system'; } catch (e) {}
+                if (pref !== 'dark' && pref !== 'light' && pref !== 'system') pref = 'system';
+                applyAppearance(pref);
+            }
             // ===== 显示保存提示（右下角淡入淡出） =====
             let toastTimer = null;
 
@@ -1790,7 +2159,7 @@
 
                 ctx.beginPath();
                 ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                ctx.strokeStyle = '#eae8e2';
+                ctx.strokeStyle = cssVar('--gray-light');
                 ctx.lineWidth = lineWidth;
                 ctx.lineCap = 'round';
                 ctx.stroke();
@@ -1801,17 +2170,23 @@
 
                 ctx.beginPath();
                 ctx.arc(cx, cy, radius, startAngle, endAngle);
-                ctx.strokeStyle = '#5a8a9e';
+                const grad = ctx.createLinearGradient(0, 0, w, h);
+                grad.addColorStop(0, cssVar('--blue'));
+                grad.addColorStop(1, cssVar('--blue-light'));
+                ctx.strokeStyle = grad;
                 ctx.lineWidth = lineWidth;
                 ctx.lineCap = 'round';
+                ctx.shadowColor = 'rgba(10, 132, 255, 0.35)';
+                ctx.shadowBlur = lineWidth * 0.5;
                 ctx.stroke();
+                ctx.shadowBlur = 0;
 
                 if (clamped >= 1) {
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                    ctx.strokeStyle = '#5a8a9e';
+                    ctx.strokeStyle = cssVar('--blue');
                     ctx.lineWidth = lineWidth * 0.3;
-                    ctx.globalAlpha = 0.15;
+                    ctx.globalAlpha = 0.25;
                     ctx.stroke();
                     ctx.globalAlpha = 1;
                 }
@@ -1880,12 +2255,19 @@
             function renderAll(x, p) {
                 drawRing(p);
                 updateGrid(p);
-                dom.percentText.textContent = formatPercent(p);
-                dom.realTimeValue.textContent = formatPercent(x);
+                dom.percentText.textContent = '';
+                dom.percentTag.classList.remove('completed-centered');
+                dom.percentTag.style.display = 'none';
+                dom.realTimeValue.textContent = state.totalDuration > 0 ? Math.round(Math.min(state.elapsed / state.totalDuration, 1) * 100) + '%' : '';
                 updateTaskInfoDisplay();
                 updatePauseButton();
                 updateRealTimeVisibility();
                 updatePauseVisual();
+                updateBottomControls();
+            }
+
+            function updateBottomControls() {
+                dom.bottomControls.classList.toggle('hidden', !(state.totalDuration > 0));
             }
 
             function formatDuration(s) {
@@ -2014,67 +2396,26 @@
             let burstTimeout = null;
 
             function triggerCelebrationBurst() {
-                document.querySelectorAll('.burst-emoji').forEach(el => el.remove());
+                document.querySelectorAll('.completion-ripple, .completion-glow').forEach(el => el.remove());
                 if (burstTimeout) clearTimeout(burstTimeout);
-                const emojis = ['🎉', '✨', '🎊', '🥳', '🎈', '💫', '⭐', '🌈'];
-                const count = 56;
-                for (let i = 0; i < count; i++) {
-                    const el = document.createElement('div');
-                    el.className = 'burst-emoji';
-                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    const angle = Math.random() * Math.PI * 2;
-                    const dist = 220 + Math.random() * 480;
-                    const tx = Math.cos(angle) * dist;
-                    const ty = Math.sin(angle) * dist - 100;
-                    el.style.setProperty('--tx', tx + 'px');
-                    el.style.setProperty('--ty', ty + 'px');
-                    el.style.setProperty('--final-opacity', 0.25 + Math.random() * 0.4);
-                    el.style.setProperty('--final-scale', 0.2 + Math.random() * 0.35);
-                    el.style.fontSize = (1.2 + Math.random() * 2.8) + 'rem';
-                    el.style.left = (30 + Math.random() * 40) + '%';
-                    el.style.top = (30 + Math.random() * 40) + '%';
-                    el.style.animationDelay = (Math.random() * 0.18) + 's';
-                    document.body.appendChild(el);
-                }
+                const glow = document.createElement('div');
+                glow.className = 'completion-glow';
+                document.body.appendChild(glow);
+                const r1 = document.createElement('div');
+                r1.className = 'completion-ripple';
+                document.body.appendChild(r1);
+                const r2 = document.createElement('div');
+                r2.className = 'completion-ripple delay';
+                document.body.appendChild(r2);
+                burstTimeout = setTimeout(function() {
+                    document.querySelectorAll('.completion-ripple, .completion-glow').forEach(el => el.remove());
+                }, 1600);
+                if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
             }
-
-            function onComplete() {
-                // 先保存历史记录（确保不被烟花中断）
-                if (state.totalDuration >= 60) {
-                    const entry = {
-                        taskName: state.taskName.trim() || '未命名任务',
-                        totalDuration: state.totalDuration,
-                        elapsed: state.totalDuration,
-                        feedbackMode: state.feedbackMode,
-                        mode: state.mode,
-                    };
-                    saveHistoryEntry(entry);
-                }
-
-                // 播放烟花（独立执行）
-                triggerCelebrationBurst();
-
-                state.isCompleted = true;
-                state.isPaused = true;
-                state.elapsed = state.totalDuration;
-                state.startTimestamp = null;
-                if (updateTimer) { clearInterval(updateTimer);
-                    updateTimer = null; }
-
-                const x = 1;
-                const p = calculatePerceivedProgress(1);
-                renderAll(x, p);
-
-                dom.percentWrap.classList.add('fade-out');
-                dom.percentTag.classList.add('completed-centered');
-                updatePauseButton();
-                updatePauseVisual();
-                saveState();
-            }
-
             // ===== 添加任务 =====
             function openAddPanel() {
                 dom.addPanel.classList.add('open');
+                dom.emptyState.classList.add('hidden');
                 dom.taskNameInputField.value = state.taskName || '';
                 dom.taskNameInputField.focus();
                 dom.taskNameInputField.select();
@@ -2105,7 +2446,10 @@
                 });
             }
 
-            function closeAddPanel() { dom.addPanel.classList.remove('open'); }
+            function closeAddPanel() {
+                dom.addPanel.classList.remove('open');
+                if (state.totalDuration <= 0) dom.emptyState.classList.remove('hidden');
+            }
 
             function startNewTask() {
                 const name = dom.taskNameInputField.value.trim() || '未命名任务';
@@ -2208,40 +2552,38 @@
                 if (typeof html2canvas === 'undefined') { alert('图片库未加载'); return; }
                 const btn = dom.captureMenuBtn;
                 const orig = btn.innerHTML;
-                btn.innerHTML = '⏳生成中…';
+                btn.innerHTML = '生成中…';
                 btn.style.pointerEvents = 'none';
                 try {
                     document.body.classList.add('capture-mode');
                     const wrap = document.createElement('div');
                     wrap.style.cssText =
-                        `position:fixed;left:-9999px;top:0;width:560px;background:#f7f6f2;padding:24px 20px 32px;z-index:-1;`;
+                        `position:fixed;left:-9999px;top:0;width:560px;background:#f5f5f7;padding:24px 20px 32px;z-index:-1;`;
                     const tname = state.taskName.trim() || '未命名任务';
                     const dur = state.totalDuration > 0 ? formatDuration(state.totalDuration) : '—';
                     const comp = state.isCompleted;
                     const x = state.totalDuration > 0 ? Math.min(state.elapsed / state.totalDuration, 1) : 0;
                     const p = calculatePerceivedProgress(x);
-                    const per = formatPercent(p);
                     wrap.innerHTML = `
-        <div style="border-bottom:1px solid #e8e6e0;padding-bottom:16px;margin-bottom:16px;">
-            <div style="font-size:1.15rem;color:#2d2d2d;">${tname}</div>
-            <div style="font-size:0.85rem;color:#8a8a8a;">${dur}</div>
+        <div style="border-bottom:1px solid rgba(0,0,0,0.08);padding-bottom:16px;margin-bottom:16px;">
+            <div style="font-size:1.15rem;color:#1d1d1f;">${tname}</div>
+            <div style="font-size:0.85rem;color:#6e6e73;">${dur}</div>
         </div>
         <div style="display:flex;align-items:center;justify-content:center;padding:24px 0;min-height:300px;">
         ${state.mode==='ring'?`
         <div style="width:240px;height:240px;position:relative;">
             <canvas id="capCanv" width="480" height="480" style="width:100%;height:100%;border-radius:50%;"></canvas>
-            ${comp?`<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.8rem;">${per}</div>`:`<div style="position:absolute;right:-4px;bottom:-4px;font-size:0.75rem;color:#b5b5b5;">${per}</div>`}
         </div>
         `:`
         <div style="width:100%;max-width:400px;aspect-ratio:20/10;">
         <div style="display:grid;grid-template-columns:repeat(20,1fr);grid-template-rows:repeat(10,1fr);gap:2px;height:100%;">
-        ${Array.from({length:200},(_,i)=>`<div style="background:${i<Math.round(p*200)?'#5a8a9e':'#eae8e2'};aspect-ratio:1/1;border-radius:1px;"></div>`).join('')}
+        ${Array.from({length:200},(_,i)=>`<div style="background:${i<Math.round(p*200)?'#007aff':'#e8e8ed'};aspect-ratio:1/1;border-radius:1px;"></div>`).join('')}
         </div>
         </div>
         `}
         </div>
-        <div style="border-top:1px solid #e8e6e0;padding-top:12px;display:flex;justify-content:space-between;font-size:0.75rem;color:#b5b5b5;">
-        <span>LogTime</span><span>${comp?'✓ 已完成':''}</span>
+        <div style="border-top:1px solid rgba(0,0,0,0.08);padding-top:12px;display:flex;justify-content:space-between;font-size:0.75rem;color:#86868b;">
+        <span>LogTime</span><span>${comp?'已完成':''}</span>
         </div>
         `;
                     document.body.appendChild(wrap);
@@ -2257,7 +2599,7 @@
                         ctx.clearRect(0, 0, w, h);
                         ctx.beginPath();
                         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-                        ctx.strokeStyle = '#eae8e2';
+                        ctx.strokeStyle = '#e8e8ed';
                         ctx.lineWidth = lw;
                         ctx.lineCap = 'round';
                         ctx.stroke();
@@ -2266,7 +2608,7 @@
                             ea = sa + Math.PI * 2 * cl;
                         ctx.beginPath();
                         ctx.arc(cx, cy, radius, sa, ea);
-                        ctx.strokeStyle = '#5a8a9e';
+                        ctx.strokeStyle = '#007aff';
                         ctx.lineWidth = lw;
                         ctx.lineCap = 'round';
                         ctx.stroke();
@@ -2411,12 +2753,11 @@
                     dom.ringContainer.classList.remove('hidden');
                     dom.gridContainer.style.display = 'none';
                     dom.gridContainer.classList.remove('active');
-                    dom.percentTag.style.display = 'flex';
+                    dom.percentTag.style.display = 'none';
                 }
                 if (state.isCompleted) {
                     renderAll(1, 1);
                     dom.percentWrap.classList.add('fade-out');
-                    dom.percentTag.classList.add('completed-centered');
                     dom.pauseBtn.textContent = '重置';
                     dom.pauseBtn.classList.add('reset-btn');
                     dom.pauseBtn.disabled = false;
@@ -2468,7 +2809,7 @@
 
             // ===== 重置 =====
             function resetTask() {
-                document.querySelectorAll('.burst-emoji').forEach(el => el.remove());
+                document.querySelectorAll('.burst-emoji, .completion-ripple, .completion-glow').forEach(el => el.remove());
                 if (burstTimeout) clearTimeout(burstTimeout);
                 if (updateTimer) { clearInterval(updateTimer);
                     updateTimer = null; }
@@ -2497,13 +2838,14 @@
                 dom.pauseBtn.textContent = '暂停';
                 dom.pauseBtn.disabled = true;
                 dom.pauseBtn.classList.remove('running', 'paused', 'reset-btn');
-                dom.realTimeValue.textContent = '0.0%';
-                dom.percentText.textContent = '0.0%';
+                dom.realTimeValue.textContent = '';
+                dom.percentText.textContent = '';
                 dom.mainVisual.classList.remove('paused-state');
                 dom.percentWrap.classList.remove('fade-out');
                 dom.percentTag.classList.remove('completed-centered');
                 drawRing(0);
                 updateGrid(0);
+                updateBottomControls();
                 dom.menuOverlay.classList.remove('open');
                 closeAddPanel();
                 if (isEditing) {
@@ -2601,6 +2943,7 @@
 
             // ===== 初始化 =====
             function init() {
+                loadAppearance();
                 buildGrid();
 
                 const hasSaved = loadState();
@@ -2619,9 +2962,8 @@
                             dom.ringContainer.classList.remove('hidden');
                             dom.gridContainer.style.display = 'none';
                             dom.gridContainer.classList.remove('active');
-                            dom.percentTag.style.display = 'flex';
+                            dom.percentTag.style.display = 'none';
                             dom.percentWrap.classList.add('fade-out');
-                            dom.percentTag.classList.add('completed-centered');
                         }
                         const x = 1;
                         const p = calculatePerceivedProgress(1);
@@ -2689,6 +3031,7 @@
                 document.querySelectorAll('.menu-option[data-mode] .radio').forEach(el => el.classList.remove('active'));
                 dom.modeRingRadio.classList.add('active');
 
+                updateBottomControls();
                 state.isInitialized = true;
             }
 
@@ -2716,6 +3059,12 @@
                 });
                 dom.authPassword.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter') { e.preventDefault(); submitAuth(); }
+                });
+                // ---- 外观切换 ----
+                appearanceOptions.forEach(function(el) {
+                    el.addEventListener('click', function() {
+                        applyAppearance(this.dataset.appearance);
+                    });
                 });
                 // ---- 任务名称编辑 ----
                 dom.taskNameDisplay.addEventListener('click', function(e) {
@@ -2762,7 +3111,7 @@
                     });
                 });
 
-                // ---- 实际时间 toggle ----
+                // ---- 真实进度 toggle ----
                 dom.realTimeToggle.addEventListener('click', function() {
                     state.showRealTime = !state.showRealTime;
                     updateRealTimeVisibility();
